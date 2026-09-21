@@ -1,3 +1,44 @@
-import { Component,inject,signal } from '@angular/core'; import { FormsModule } from '@angular/forms'; import { ActivatedRoute } from '@angular/router'; import { DecimalPipe } from '@angular/common'; import { ApiService } from '@shared/api.service'; import { Account,Instrument,Order,Quote } from '@shared/models';
-@Component({selector:'app-trade',standalone:true,imports:[FormsModule,DecimalPipe],template:`<h1>Trade</h1><div class="trade-grid"><section class="panel"><label>Account</label><select [(ngModel)]="accountId">@for(a of accounts();track a.accountId){<option [value]="a.accountId">{{a.accountNumber}}</option>}</select><label>Instrument</label><select [(ngModel)]="symbol" (ngModelChange)="loadQuote()">@for(i of instruments();track i.instrumentId){<option [value]="i.symbol">{{i.symbol}} — {{i.name}}</option>}</select>@if(quote();as q){<div class="quote"><div><small>Bid</small><strong>{{q.bid|number:'1.2-8'}}</strong></div><div><small>Ask</small><strong>{{q.ask|number:'1.2-8'}}</strong></div></div>}<label>Side</label><div class="side"><button [class.active]="side==='BUY'" (click)="side='BUY'">BUY</button><button [class.active]="side==='SELL'" (click)="side='SELL'">SELL</button></div><label>Quantity</label><input type="number" min="0.00000001" step="any" [(ngModel)]="quantity"><button class="primary" (click)="submit()" [disabled]="busy()">{{busy()?'Submitting…':'Submit order'}}</button></section>@if(result();as r){<section class="panel success"><h2>Order accepted</h2><p><strong>{{r.side}} {{r.quantity}}</strong></p><p>Status: {{r.status}}</p><code>{{r.orderId}}</code></section>}@if(error()){<section class="panel error"><h2>Order rejected</h2><p>{{error()}}</p></section>}</div>`})
-export class TradeComponent{private api=inject(ApiService);private route=inject(ActivatedRoute);accounts=signal<Account[]>([]);instruments=signal<Instrument[]>([]);quote=signal<Quote|null>(null);result=signal<Order|null>(null);error=signal('');busy=signal(false);accountId='';symbol='AAPL';side:'BUY'|'SELL'='BUY';quantity=1;constructor(){const requested=this.route.snapshot.queryParamMap.get('symbol');if(requested)this.symbol=requested;this.api.accounts().subscribe(x=>{this.accounts.set(x);this.accountId=x[0]?.accountId??'';});this.api.instruments().subscribe(x=>{this.instruments.set(x);this.loadQuote();});}loadQuote(){if(this.symbol)this.api.quote(this.symbol).subscribe(x=>this.quote.set(x));}submit(){this.error.set('');this.result.set(null);this.busy.set(true);this.api.submitOrder({accountId:this.accountId,symbol:this.symbol,side:this.side,quantity:this.quantity}).subscribe({next:o=>{this.result.set(o);this.busy.set(false);},error:e=>{this.error.set(e.error?.message??'Unable to submit order');this.busy.set(false);}});}}
+import { Component,inject,signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
+import { ApiService } from '@shared/api.service';
+import { Account,CashBalance,Instrument,Order,Quote } from '@shared/models';
+
+@Component({selector:'app-trade',standalone:true,imports:[FormsModule,DecimalPipe],template:`
+<h1>Trade</h1>
+<div class="trade-grid">
+<section class="panel">
+<label>Account</label><select [(ngModel)]="accountId">@for(a of accounts();track a.accountId){<option [value]="a.accountId">{{a.accountNumber}}</option>}</select>
+<label>Instrument</label><select [(ngModel)]="symbol" (ngModelChange)="loadQuote()">@for(i of instruments();track i.instrumentId){<option [value]="i.symbol">{{i.symbol}} — {{i.name}}</option>}</select>
+@if(quote();as q){
+ <div class="quote"><div><small>Bid</small><strong>{{q.bid|number:'1.2-8'}}</strong></div><div><small>Ask</small><strong>{{q.ask|number:'1.2-8'}}</strong></div></div>
+ <p><small>Trade currency</small> <strong>{{q.quoteCurrency}}</strong> · <small>Available cash</small> <strong>{{availableCash(q.quoteCurrency)|number:'1.2-8'}} {{q.quoteCurrency}}</strong></p>
+}
+<label>Side</label><div class="side"><button [class.active]="side==='BUY'" (click)="side='BUY'">BUY</button><button [class.active]="side==='SELL'" (click)="side='SELL'">SELL</button></div>
+<label>Quantity</label><input type="number" min="0.00000001" step="any" [(ngModel)]="quantity">
+<button class="primary" (click)="submit()" [disabled]="busy()">{{busy()?'Submitting…':'Submit order'}}</button>
+</section>
+@if(result();as r){<section class="panel success"><h2>Order accepted</h2><p><strong>{{r.side}} {{r.quantity}}</strong></p><p>Status: {{r.status}}</p><code>{{r.orderId}}</code></section>}
+@if(error()){<section class="panel error"><h2>Order rejected</h2><p>{{error()}}</p><p>Use the Portfolio cash wallet to deposit funds or explicitly convert currency before retrying. Trades never perform silent FX conversion.</p></section>}
+</div>`})
+export class TradeComponent{
+ private api=inject(ApiService);private route=inject(ActivatedRoute);
+ accounts=signal<Account[]>([]);instruments=signal<Instrument[]>([]);cash=signal<CashBalance[]>([]);quote=signal<Quote|null>(null);result=signal<Order|null>(null);error=signal('');busy=signal(false);
+ accountId='';symbol='AAPL';side:'BUY'|'SELL'='BUY';quantity=1;
+ constructor(){
+  const requested=this.route.snapshot.queryParamMap.get('symbol');if(requested)this.symbol=requested;
+  this.api.accounts().subscribe(x=>{this.accounts.set(x);this.accountId=x[0]?.accountId??'';});
+  this.api.cash().subscribe(x=>this.cash.set(x));
+  this.api.instruments().subscribe(x=>{this.instruments.set(x);this.loadQuote();});
+ }
+ loadQuote(){if(this.symbol)this.api.quote(this.symbol).subscribe(x=>this.quote.set(x));}
+ availableCash(currency:string){return this.cash().find(c=>c.accountId===this.accountId&&c.currency===currency)?.balance??0;}
+ submit(){
+  this.error.set('');this.result.set(null);this.busy.set(true);
+  this.api.submitOrder({accountId:this.accountId,symbol:this.symbol,side:this.side,quantity:this.quantity}).subscribe({
+   next:o=>{this.result.set(o);this.busy.set(false);},
+   error:e=>{this.error.set(e.error?.message??'Unable to submit order');this.busy.set(false);}
+  });
+ }
+}
