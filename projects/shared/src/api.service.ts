@@ -1,9 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Account,CashBalance,CashConversion,CashTransaction,ClientSegmentReport,FxRate,Instrument,InstrumentReport,Order,OrderEvent,Position,Quote,ReportSummary,TradeActivity,VolumeReport } from './models';
+export interface ApiVersion { application:string; version:string; timestamp:string; }
 @Injectable({providedIn:'root'})
 export class ApiService {
  private readonly http=inject(HttpClient); private readonly base='http://localhost:8081/api/v1';
+ version(){return this.http.get<ApiVersion>(`${this.base}/version`);}
  instruments(){return this.http.get<Instrument[]>(`${this.base}/instruments`);} quote(symbol:string){return this.http.get<Quote>(`${this.base}/instruments/${encodeURIComponent(symbol)}/quote`);}
  accounts(){return this.http.get<Account[]>(`${this.base}/me/accounts`);} cash(){return this.http.get<CashBalance[]>(`${this.base}/me/cash`);} positions(){return this.http.get<Position[]>(`${this.base}/me/positions`);}
  deposit(body:{accountId:string;currency:string;amount:number}){return this.http.post<CashBalance>(`${this.base}/me/cash/deposits`,body);}
