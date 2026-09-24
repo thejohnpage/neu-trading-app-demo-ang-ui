@@ -17,4 +17,6 @@ export class ApiService {
  submitOrder(body:{accountId:string;symbol:string;side:'BUY'|'SELL';quantity:number}){return this.http.post<Order>(`${this.base}/orders`,body);}
  adminOrders(){return this.http.get<Order[]>(`${this.base}/admin/orders`);} adminOrderEvents(id:string){return this.http.get<OrderEvent[]>(`${this.base}/admin/orders/${id}/events`);} pricing(id:string){return this.http.get<Record<string,unknown>>(`${this.base}/admin/orders/${id}/pricing`);}
  reportSummary(){return this.http.get<ReportSummary>(`${this.base}/admin/reports/summary`);} reportActivity(){return this.http.get<TradeActivity[]>(`${this.base}/admin/reports/activity`);} reportInstruments(){return this.http.get<InstrumentReport[]>(`${this.base}/admin/reports/instruments`);} reportSegments(){return this.http.get<ClientSegmentReport[]>(`${this.base}/admin/reports/client-segments`);} reportVolume(){return this.http.get<VolumeReport[]>(`${this.base}/admin/reports/volume`);}
+ auditEvents(filters:{action?:string;actorType?:string;resourceType?:string}){const params:any={limit:100};if(filters.action)params.action=filters.action;if(filters.actorType)params.actorType=filters.actorType;if(filters.resourceType)params.resourceType=filters.resourceType;return this.http.get<any[]>(`${this.base}/admin/audit`,{params});}
 }
+
