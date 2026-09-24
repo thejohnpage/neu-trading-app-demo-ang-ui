@@ -22,6 +22,9 @@ export class ApiService {
  createAdminUser(body:{email:string;firstName:string;lastName:string;password:string;roles:string[]}){return this.http.post<AdminUser>(`${this.base}/admin/users`,body);}
  setAdminUserStatus(id:string,active:boolean){return this.http.patch<AdminUser>(`${this.base}/admin/users/${id}/status`,null,{params:{active}});}
  setAdminUserRoles(id:string,roles:string[]){return this.http.put<AdminUser>(`${this.base}/admin/users/${id}/roles`,roles);}
+ adminUserProfile(id:string){return this.http.get<any>(`${this.base}/admin/users/${id}/profile`);}
+ updateAdminUserProfile(id:string,body:any){return this.http.put<AdminUser>(`${this.base}/admin/users/${id}/profile`,body);}
 }
+
 
 
