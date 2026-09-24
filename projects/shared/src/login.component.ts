@@ -1,3 +1,21 @@
 import { Component,inject } from '@angular/core';import { FormsModule } from '@angular/forms';import { ActivatedRoute,Router } from '@angular/router';import { AuthService } from './auth.service';
-@Component({selector:'app-login',standalone:true,imports:[FormsModule],template:`<h1>Sign in</h1><section class="panel"><label>Email</label><input type="email" [(ngModel)]="email"><label>Password</label><input type="password" [(ngModel)]="password"><button class="primary" (click)="login()" [disabled]="busy">{{busy?'Signing in…':'Sign in'}}</button>@if(error){<p class="error">{{error}}</p>}</section>`})
-export class LoginComponent{private auth=inject(AuthService);private router=inject(Router);private route=inject(ActivatedRoute);email='';password='';busy=false;error='';login(){this.busy=true;this.error='';const type=(this.route.snapshot.data['type']??'CLIENT') as 'CLIENT'|'ADMIN';this.auth.login(this.email,this.password,type).subscribe({next:r=>{this.busy=false;this.router.navigateByUrl(type==='ADMIN'?'/':'/portfolio');},error:()=>{this.busy=false;this.error='Invalid email or password';}});}}
+@Component({selector:'app-login',standalone:true,imports:[FormsModule],template:`
+<div class="login-page">
+ <section class="login-card">
+  <div class="login-brand">NEU Trading</div>
+  <p class="login-context">{{type==='ADMIN'?'Admin & Reporting':'Client'}}</p>
+  <h1>Sign in</h1>
+  <p class="muted">{{type==='ADMIN'?'Sign in with your administrative account.':'Sign in to access your trading account.'}}</p>
+  <form (ngSubmit)="login()">
+   <label for="login-email">Email</label><input id="login-email" name="email" type="email" autocomplete="username" [(ngModel)]="email" required>
+   <label for="login-password">Password</label><input id="login-password" name="password" type="password" autocomplete="current-password" [(ngModel)]="password" required>
+   <button class="primary" type="submit" [disabled]="busy">{{busy?'Signing in…':'Sign in'}}</button>
+  </form>
+  @if(error){<p class="login-error">{{error}}</p>}
+ </section>
+</div>`})
+export class LoginComponent{
+ private auth=inject(AuthService);private router=inject(Router);private route=inject(ActivatedRoute);
+ readonly type=(this.route.snapshot.data['type']??'CLIENT') as 'CLIENT'|'ADMIN';email='';password='';busy=false;error='';
+ login(){if(!this.email||!this.password)return;this.busy=true;this.error='';this.auth.login(this.email,this.password,this.type).subscribe({next:()=>{this.busy=false;this.router.navigateByUrl(this.type==='ADMIN'?'/':'/portfolio');},error:()=>{this.busy=false;this.error='Invalid email or password';}});}
+}
