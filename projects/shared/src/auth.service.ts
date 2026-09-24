@@ -1,5 +1,5 @@
 import { Injectable,signal } from '@angular/core';import { HttpClient } from '@angular/common/http';import { tap } from 'rxjs';
-export interface AuthSubject{sub:string;type:'CLIENT'|'ADMIN';email:string;roles?:string[]}
+export interface AuthSubject{sub:string;type:'CLIENT'|'ADMIN';email:string;roles?:string[];capabilities?:string[]}
 export interface LoginResponse{accessToken:string;refreshToken:string;tokenType:string;expiresIn:string;subject:AuthSubject}
 @Injectable({providedIn:'root'}) export class AuthService{
  private base='http://localhost:3001/api/v1/auth';subject=signal<AuthSubject|null>(this.readSubject());
