@@ -1,0 +1,12 @@
+import { Component,inject } from '@angular/core';import { FormsModule } from '@angular/forms';import { Router,RouterLink } from '@angular/router';import { ApiService } from '@shared/api.service';
+@Component({selector:'app-register',standalone:true,imports:[FormsModule,RouterLink],template:`
+<div class="login-page"><section class="login-card registration-card"><div class="login-brand">NEU Trading</div><p class="login-context">Client Brokerage</p><h1>Open an account</h1><p class="muted">Create your client profile and brokerage account.</p>
+<form (ngSubmit)="register()"><div class="registration-grid"><div><label>First name</label><input name="firstName" [(ngModel)]="firstName" required></div><div><label>Last name</label><input name="lastName" [(ngModel)]="lastName" required></div></div>
+<label>Email</label><input name="email" type="email" autocomplete="email" [(ngModel)]="email" required>
+<label>Password</label><input name="password" type="password" autocomplete="new-password" [(ngModel)]="password" minlength="10" required>
+<label>Confirm password</label><input name="confirmPassword" type="password" autocomplete="new-password" [(ngModel)]="confirmPassword" required>
+<label>Client segment</label><select name="clientSegment" [(ngModel)]="clientSegment"><option value="RETAIL">Retail</option><option value="AFFLUENT">Affluent</option><option value="INSTITUTIONAL">Institutional</option></select>
+<button class="primary" type="submit" [disabled]="busy">{{busy?'Creating account…':'Create account'}}</button></form>
+@if(error){<p class="login-error">{{error}}</p>}<p class="login-switch">Already registered? <a routerLink="/login">Sign in</a></p></section></div>`})
+export class RegisterComponent{private api=inject(ApiService);private router=inject(Router);firstName='';lastName='';email='';password='';confirmPassword='';clientSegment='RETAIL';busy=false;error='';
+register(){this.error='';if(this.password!==this.confirmPassword){this.error='Passwords do not match.';return;}if(this.password.length<10){this.error='Password must be at least 10 characters.';return;}this.busy=true;this.api.registerClient({email:this.email,firstName:this.firstName,lastName:this.lastName,password:this.password,clientSegment:this.clientSegment}).subscribe({next:()=>{this.busy=false;this.router.navigate(['/login'],{queryParams:{registered:'true'}});},error:e=>{this.busy=false;this.error=e.error?.message??'Unable to create account.';}});}}
