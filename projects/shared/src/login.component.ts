@@ -1,5 +1,5 @@
-import { Component,inject } from '@angular/core';import { FormsModule } from '@angular/forms';import { ActivatedRoute,Router } from '@angular/router';import { AuthService } from './auth.service';
-@Component({selector:'app-login',standalone:true,imports:[FormsModule],template:`
+import { Component,inject } from '@angular/core';import { FormsModule } from '@angular/forms';import { ActivatedRoute,Router,RouterLink } from '@angular/router';import { AuthService } from './auth.service';
+@Component({selector:'app-login',standalone:true,imports:[FormsModule,RouterLink],template:`
 <div class="login-page">
  <section class="login-card">
   <div class="login-brand">NEU Trading</div>
@@ -11,7 +11,7 @@ import { Component,inject } from '@angular/core';import { FormsModule } from '@a
    <label for="login-password">Password</label><input id="login-password" name="password" type="password" autocomplete="current-password" [(ngModel)]="password" required>
    <button class="primary" type="submit" [disabled]="busy">{{busy?'Signing in…':'Sign in'}}</button>
   </form>
-  @if(error){<p class="login-error">{{error}}</p>}
+  @if(error){<p class="login-error">{{error}}</p>} @if(type==='CLIENT'){<p class="login-switch">New to NEU Trading? <a routerLink="/register">Open an account</a></p>}
  </section>
 </div>`})
 export class LoginComponent{
