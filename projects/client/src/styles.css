@@ -5,3 +5,5 @@
 html,body{min-height:100%}.app-shell{min-height:100vh;display:flex;flex-direction:column}.app-shell main{width:100%;flex:1}footer{margin-top:auto;padding:16px 28px;border-top:1px solid #d9dee5;background:white;color:#667085;font-size:12px;text-align:center}
 
 .session-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px}.session-modal{width:min(460px,100%);background:white;border-radius:8px;padding:26px;box-shadow:0 20px 50px rgba(0,0,0,.25)}.session-modal h2{margin-top:0}.session-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}.session-actions button{min-width:120px}
+
+.session-header{margin-left:auto;display:flex;align-items:center;gap:12px;font-size:12px;white-space:nowrap}.session-header span{font-variant-numeric:tabular-nums;opacity:.85}.session-header button{padding:6px 10px;border:1px solid currentColor;border-radius:4px;background:transparent;color:inherit;cursor:pointer}.session-header button:hover{background:rgba(127,127,127,.12)}
