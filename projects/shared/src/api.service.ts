@@ -1,13 +1,40 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Account,CashBalance,ClientSegmentReport,Instrument,InstrumentReport,Order,OrderEvent,Position,Quote,ReportSummary,TradeActivity,VolumeReport } from './models';
+import { Account,CashBalance,CashConversion,CashTransaction,ClientSegmentReport,FxRate,Instrument,InstrumentReport,Order,OrderEvent,Position,Quote,ReportSummary,TradeActivity,VolumeReport,AdminUser } from './models';
+export interface ApiVersion { application:string; version:string; timestamp:string; }
 @Injectable({providedIn:'root'})
 export class ApiService {
  private readonly http=inject(HttpClient); private readonly base='http://localhost:8081/api/v1';
+ registerClient(body:{email:string;firstName:string;lastName:string;password:string;clientSegment:string}){return this.http.post<any>(`${this.base}/registration/client`,body);}
+ version(){return this.http.get<ApiVersion>(`${this.base}/version`);}
  instruments(){return this.http.get<Instrument[]>(`${this.base}/instruments`);} quote(symbol:string){return this.http.get<Quote>(`${this.base}/instruments/${encodeURIComponent(symbol)}/quote`);}
  accounts(){return this.http.get<Account[]>(`${this.base}/me/accounts`);} cash(){return this.http.get<CashBalance[]>(`${this.base}/me/cash`);} positions(){return this.http.get<Position[]>(`${this.base}/me/positions`);}
+ deposit(body:{accountId:string;currency:string;amount:number}){return this.http.post<CashBalance>(`${this.base}/me/cash/deposits`,body);}
+ withdraw(body:{accountId:string;currency:string;amount:number}){return this.http.post<CashBalance>(`${this.base}/me/cash/withdrawals`,body);}
+ fxRate(from:string,to:string){return this.http.get<FxRate>(`${this.base}/me/cash/rates`,{params:{from,to}});}
+ convertCash(body:{accountId:string;fromCurrency:string;toCurrency:string;amount:number}){return this.http.post<CashConversion>(`${this.base}/me/cash/conversions`,body);}
+ cashTransactions(accountId:string){return this.http.get<CashTransaction[]>(`${this.base}/me/cash/transactions`,{params:{accountId}});}
  orders(){return this.http.get<Order[]>(`${this.base}/orders`);} orderEvents(id:string){return this.http.get<OrderEvent[]>(`${this.base}/orders/${id}/events`);}
  submitOrder(body:{accountId:string;symbol:string;side:'BUY'|'SELL';quantity:number}){return this.http.post<Order>(`${this.base}/orders`,body);}
  adminOrders(){return this.http.get<Order[]>(`${this.base}/admin/orders`);} adminOrderEvents(id:string){return this.http.get<OrderEvent[]>(`${this.base}/admin/orders/${id}/events`);} pricing(id:string){return this.http.get<Record<string,unknown>>(`${this.base}/admin/orders/${id}/pricing`);}
  reportSummary(){return this.http.get<ReportSummary>(`${this.base}/admin/reports/summary`);} reportActivity(){return this.http.get<TradeActivity[]>(`${this.base}/admin/reports/activity`);} reportInstruments(){return this.http.get<InstrumentReport[]>(`${this.base}/admin/reports/instruments`);} reportSegments(){return this.http.get<ClientSegmentReport[]>(`${this.base}/admin/reports/client-segments`);} reportVolume(){return this.http.get<VolumeReport[]>(`${this.base}/admin/reports/volume`);}
+ auditEvents(filters:{action?:string;actorType?:string;resourceType?:string}){const params:any={limit:100};if(filters.action)params.action=filters.action;if(filters.actorType)params.actorType=filters.actorType;if(filters.resourceType)params.resourceType=filters.resourceType;return this.http.get<any[]>(`${this.base}/admin/audit`,{params});}
+ adminUsers(){return this.http.get<AdminUser[]>(`${this.base}/admin/users`);}
+ createAdminUser(body:{email:string;firstName:string;lastName:string;password:string;roles:string[]}){return this.http.post<AdminUser>(`${this.base}/admin/users`,body);}
+ setAdminUserStatus(id:string,active:boolean){return this.http.patch<AdminUser>(`${this.base}/admin/users/${id}/status`,null,{params:{active}});}
+ setAdminUserRoles(id:string,roles:string[]){return this.http.put<AdminUser>(`${this.base}/admin/users/${id}/roles`,roles);}
+ adminUserProfile(id:string){return this.http.get<any>(`${this.base}/admin/users/${id}/profile`);}
+ updateAdminUserProfile(id:string,body:any){return this.http.put<AdminUser>(`${this.base}/admin/users/${id}/profile`,body);}
+ rbacCapabilities(){return this.http.get<string[]>(`${this.base}/admin/rbac/capabilities`);}
+ rbacRoles(){return this.http.get<any[]>(`${this.base}/admin/rbac/roles`);}
+ createRbacRole(body:any){return this.http.post<any>(`${this.base}/admin/rbac/roles`,body);}
+ updateRbacRole(id:number,body:any){return this.http.put<any>(`${this.base}/admin/rbac/roles/${id}`,body);}
+ adminClients(){return this.http.get<any[]>(`${this.base}/admin/clients`);}
+ adminClientSegments(){return this.http.get<any[]>(`${this.base}/admin/clients/segments`);}
+ updateAdminClient(id:string,body:any){return this.http.put<any>(`${this.base}/admin/clients/${id}`,body);}
 }
+
+
+
+
+
