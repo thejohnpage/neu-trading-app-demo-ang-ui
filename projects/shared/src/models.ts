@@ -13,3 +13,5 @@ export interface TradeActivity { order_id:string; client_segment:string|null; ac
 export interface InstrumentReport { symbol:string; instrument_type:string; trade_count:number; total_quantity:number; total_notional:number; average_execution_price:number; }
 export interface ClientSegmentReport { client_segment:string; trade_count:number; clients:number; total_quantity:number; total_notional:number; }
 export interface VolumeReport { trade_date:string; trade_count:number; total_quantity:number; total_notional:number; }
+
+export interface AdminUser { userId:string; email:string; firstName:string; lastName:string; active:boolean; roles:string[]; createdAt:string; updatedAt:string; }
