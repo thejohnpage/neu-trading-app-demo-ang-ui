@@ -29,7 +29,11 @@ export class ApiService {
  rbacRoles(){return this.http.get<any[]>(`${this.base}/admin/rbac/roles`);}
  createRbacRole(body:any){return this.http.post<any>(`${this.base}/admin/rbac/roles`,body);}
  updateRbacRole(id:number,body:any){return this.http.put<any>(`${this.base}/admin/rbac/roles/${id}`,body);}
+ adminClients(){return this.http.get<any[]>(`${this.base}/admin/clients`);}
+ adminClientSegments(){return this.http.get<any[]>(`${this.base}/admin/clients/segments`);}
+ updateAdminClient(id:string,body:any){return this.http.put<any>(`${this.base}/admin/clients/${id}`,body);}
 }
+
 
 
 
