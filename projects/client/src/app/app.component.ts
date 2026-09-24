@@ -6,8 +6,10 @@ import { SessionHeaderComponent } from '@shared/session-header.component';
 import packageInfo from '../../../../package.json';
 
 @Component({selector:'app-root',standalone:true,imports:[RouterOutlet,RouterLink,RouterLinkActive,SessionTimeoutComponent,SessionHeaderComponent],template:`
-<div class="app-shell"><header><a class="brand" routerLink="/">NEU Trading</a><span>Client</span><nav><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a><a routerLink="/portfolio" routerLinkActive="active">Portfolio</a><a routerLink="/markets" routerLinkActive="active">Markets</a><a routerLink="/trade" routerLinkActive="active">Trade</a><a routerLink="/orders" routerLinkActive="active">Orders</a></nav><app-session-header/></header><main><router-outlet/></main><footer>© {{year}} NEU Trading · Client UI v{{uiVersion}} · API v{{apiVersion()}}</footer><app-session-timeout/></div>`})
-export class AppComponent{
- private api=inject(ApiService);readonly year=new Date().getFullYear();readonly uiVersion=packageInfo.version;readonly apiVersion=signal('…');
- constructor(){this.api.version().subscribe({next:v=>this.apiVersion.set(v.version),error:()=>this.apiVersion.set('unavailable')});}
-}
+<div class="app-shell">
+ <header class="topbar"><div class="brand-lockup"><a class="brand" routerLink="/">NEU Trading</a><span class="product-label">Client Brokerage</span></div><app-session-header/></header>
+ <nav class="primary-nav"><div class="nav-inner"><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a><a routerLink="/portfolio" routerLinkActive="active">Portfolio</a><a routerLink="/markets" routerLinkActive="active">Markets</a><a routerLink="/trade" routerLinkActive="active">Trade</a><a routerLink="/orders" routerLinkActive="active">Orders</a></div></nav>
+ <main><router-outlet/></main>
+ <footer>© {{year}} NEU Trading · Client UI v{{uiVersion}} · API v{{apiVersion()}}</footer><app-session-timeout/>
+</div>`})
+export class AppComponent{private api=inject(ApiService);readonly year=new Date().getFullYear();readonly uiVersion=packageInfo.version;readonly apiVersion=signal('…');constructor(){this.api.version().subscribe({next:v=>this.apiVersion.set(v.version),error:()=>this.apiVersion.set('unavailable')});}}
