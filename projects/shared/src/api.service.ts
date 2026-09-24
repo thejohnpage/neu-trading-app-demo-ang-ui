@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Account,CashBalance,CashConversion,CashTransaction,ClientSegmentReport,FxRate,Instrument,InstrumentReport,Order,OrderEvent,Position,Quote,ReportSummary,TradeActivity,VolumeReport } from './models';
+import { Account,CashBalance,CashConversion,CashTransaction,ClientSegmentReport,FxRate,Instrument,InstrumentReport,Order,OrderEvent,Position,Quote,ReportSummary,TradeActivity,VolumeReport,AdminUser } from './models';
 export interface ApiVersion { application:string; version:string; timestamp:string; }
 @Injectable({providedIn:'root'})
 export class ApiService {
@@ -18,5 +18,10 @@ export class ApiService {
  adminOrders(){return this.http.get<Order[]>(`${this.base}/admin/orders`);} adminOrderEvents(id:string){return this.http.get<OrderEvent[]>(`${this.base}/admin/orders/${id}/events`);} pricing(id:string){return this.http.get<Record<string,unknown>>(`${this.base}/admin/orders/${id}/pricing`);}
  reportSummary(){return this.http.get<ReportSummary>(`${this.base}/admin/reports/summary`);} reportActivity(){return this.http.get<TradeActivity[]>(`${this.base}/admin/reports/activity`);} reportInstruments(){return this.http.get<InstrumentReport[]>(`${this.base}/admin/reports/instruments`);} reportSegments(){return this.http.get<ClientSegmentReport[]>(`${this.base}/admin/reports/client-segments`);} reportVolume(){return this.http.get<VolumeReport[]>(`${this.base}/admin/reports/volume`);}
  auditEvents(filters:{action?:string;actorType?:string;resourceType?:string}){const params:any={limit:100};if(filters.action)params.action=filters.action;if(filters.actorType)params.actorType=filters.actorType;if(filters.resourceType)params.resourceType=filters.resourceType;return this.http.get<any[]>(`${this.base}/admin/audit`,{params});}
+ adminUsers(){return this.http.get<AdminUser[]>(`${this.base}/admin/users`);}
+ createAdminUser(body:{email:string;firstName:string;lastName:string;password:string;roles:string[]}){return this.http.post<AdminUser>(`${this.base}/admin/users`,body);}
+ setAdminUserStatus(id:string,active:boolean){return this.http.patch<AdminUser>(`${this.base}/admin/users/${id}/status`,null,{params:{active}});}
+ setAdminUserRoles(id:string,roles:string[]){return this.http.put<AdminUser>(`${this.base}/admin/users/${id}/roles`,roles);}
 }
+
 
