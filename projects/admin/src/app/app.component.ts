@@ -11,8 +11,8 @@ import packageInfo from '../../../../package.json';
 <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Overview</a>
 @if(rbac.has('ORDER_OPERATIONS')){<a routerLink="/orders" routerLinkActive="active">Orders</a>}
 @if(rbac.has('REPORTING')){<a routerLink="/activity" routerLinkActive="active">Activity</a><a routerLink="/instruments" routerLinkActive="active">Instruments</a><a routerLink="/segments" routerLinkActive="active">Segments</a><a routerLink="/volume" routerLinkActive="active">Volume</a>}
-@if(rbac.has('AUDIT')){<a routerLink="/audit" routerLinkActive="active">Audit</a>}
-@if(rbac.has('USER_MANAGEMENT')){<a routerLink="/users" routerLinkActive="active">Users</a>}
+@if(rbac.has('AUDIT_VIEW')){<a routerLink="/audit" routerLinkActive="active">Audit</a>}
+@if(rbac.has('USER_MANAGEMENT')){<a routerLink="/users" routerLinkActive="active">Users</a>}@if(rbac.has('ROLE_MANAGEMENT')){<a routerLink="/roles" routerLinkActive="active">Roles</a>}
 </nav><app-session-header/></header><main><router-outlet/></main><footer>© {{year}} NEU Trading · Admin UI v{{uiVersion}} · API v{{apiVersion()}}</footer><app-session-timeout/></div>`})
 export class AppComponent{
  private api=inject(ApiService);readonly rbac=inject(RbacService);readonly year=new Date().getFullYear();readonly uiVersion=packageInfo.version;readonly apiVersion=signal('…');
