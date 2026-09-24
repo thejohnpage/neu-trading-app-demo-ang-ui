@@ -7,8 +7,8 @@ import { ApiService } from '@shared/api.service';import { SessionTimeoutComponen
  <p>Workspace</p><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Overview</a>
  @if(rbac.has('ORDER_OPERATIONS')){<a routerLink="/orders" routerLinkActive="active">Orders</a>}
  @if(rbac.has('REPORTING')){<p>Reporting</p><a routerLink="/activity" routerLinkActive="active">Activity</a><a routerLink="/instruments" routerLinkActive="active">Instruments</a><a routerLink="/segments" routerLinkActive="active">Segments</a><a routerLink="/volume" routerLinkActive="active">Volume</a>}
- @if(rbac.has('AUDIT_VIEW')||rbac.has('USER_MANAGEMENT')||rbac.has('ROLE_MANAGEMENT')){<p>Governance</p>}
- @if(rbac.has('AUDIT_VIEW')){<a routerLink="/audit" routerLinkActive="active">Audit Trail</a>}
+ @if(rbac.has('AUDIT_VIEW')||rbac.has('CLIENT_MANAGEMENT')||rbac.has('USER_MANAGEMENT')||rbac.has('ROLE_MANAGEMENT')){<p>Governance</p>}
+ @if(rbac.has('AUDIT_VIEW')){<a routerLink="/audit" routerLinkActive="active">Audit Trail</a>} @if(rbac.has('CLIENT_MANAGEMENT')){<a routerLink="/clients" routerLinkActive="active">Clients</a>}
  @if(rbac.has('USER_MANAGEMENT')){<a routerLink="/users" routerLinkActive="active">Users</a>}
  @if(rbac.has('ROLE_MANAGEMENT')){<a routerLink="/roles" routerLinkActive="active">Roles & Capabilities</a>}
  </nav></aside>
