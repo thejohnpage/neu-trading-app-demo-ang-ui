@@ -24,7 +24,12 @@ export class ApiService {
  setAdminUserRoles(id:string,roles:string[]){return this.http.put<AdminUser>(`${this.base}/admin/users/${id}/roles`,roles);}
  adminUserProfile(id:string){return this.http.get<any>(`${this.base}/admin/users/${id}/profile`);}
  updateAdminUserProfile(id:string,body:any){return this.http.put<AdminUser>(`${this.base}/admin/users/${id}/profile`,body);}
+ rbacCapabilities(){return this.http.get<string[]>(`${this.base}/admin/rbac/capabilities`);}
+ rbacRoles(){return this.http.get<any[]>(`${this.base}/admin/rbac/roles`);}
+ createRbacRole(body:any){return this.http.post<any>(`${this.base}/admin/rbac/roles`,body);}
+ updateRbacRole(id:number,body:any){return this.http.put<any>(`${this.base}/admin/rbac/roles/${id}`,body);}
 }
+
 
 
 
