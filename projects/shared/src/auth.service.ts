@@ -2,7 +2,7 @@ import { Injectable,signal } from '@angular/core';import { HttpClient } from '@a
 export interface AuthSubject{sub:string;type:'CLIENT'|'ADMIN';email:string;roles?:string[];capabilities?:string[]}
 export interface LoginResponse{accessToken:string;refreshToken:string;tokenType:string;expiresIn:string;subject:AuthSubject}
 @Injectable({providedIn:'root'}) export class AuthService{
- private base='http://10.14.132.8:3001/api/v1/auth';subject=signal<AuthSubject|null>(this.readSubject());
+ private base='http://localhost:3001/api/v1/auth';subject=signal<AuthSubject|null>(this.readSubject());
  constructor(private http:HttpClient){}
  login(email:string,password:string,type:'CLIENT'|'ADMIN'){return this.http.post<LoginResponse>(this.base+'/login',{email,password,type}).pipe(tap(r=>this.store(r)));}
  refresh(){const refreshToken=localStorage.getItem('refreshToken');if(!refreshToken)throw new Error('No refresh token');return this.http.post<LoginResponse>(this.base+'/refresh',{refreshToken}).pipe(tap(r=>this.store(r)));}
