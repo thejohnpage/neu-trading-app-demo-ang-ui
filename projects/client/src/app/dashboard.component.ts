@@ -2,10 +2,12 @@ import { Component, inject, signal } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '@shared/api.service';
+import { OrderStatusStreamService,OrderStatusUpdate } from '@shared/order-status-stream.service';
 import { Account,CashBalance,CashTransaction,Order,Position } from '@shared/models';
 
 @Component({selector:'app-dashboard',standalone:true,imports:[DecimalPipe,DatePipe,FormsModule],template:`
 <section class="page-heading"><div><p class="eyebrow">Brokerage account</p><h1>Portfolio</h1><p class="muted">Holdings, cash and recent account activity.</p></div><select class="account-picker" [(ngModel)]="accountId" (ngModelChange)="loadTransactions()">@for(a of accounts();track a.accountId){<option [value]="a.accountId">{{a.accountNumber}}</option>}</select></section>
+@if(liveStatus();as s){<section class="live-order-status"><div><small>Live trade status</small><strong>{{s.side}} {{s.quantity}} · {{shortId(s.orderId,'ORD')}}</strong></div><span class="status-pill">{{s.status}}</span>@if(s.executionPrice){<span>Executed @ {{s.executionPrice|number:'1.2-4'}}</span>}</section>}
 <section class="portfolio-summary"><article><small>Cash currencies</small><strong>{{cash().length}}</strong></article><article><small>Positions</small><strong>{{positions().length}}</strong></article><article><small>Orders</small><strong>{{orders().length}}</strong></article></section>
 
 <section class="portfolio-section"><div class="section-title"><div><h2>Positions</h2><p class="muted">Securities currently held in this account.</p></div></div>
@@ -27,9 +29,9 @@ import { Account,CashBalance,CashTransaction,Order,Position } from '@shared/mode
 <section class="portfolio-section"><div class="section-title"><div><h2>Cash activity</h2><p class="muted">Deposits, withdrawals, currency conversions and trade cash movements.</p></div></div>
 <table class="portfolio-table"><thead><tr><th>Date</th><th>Activity</th><th>Currency</th><th class="numeric">Amount</th></tr></thead><tbody>@for(t of transactions();track t.transactionId){<tr><td>{{t.createdAt|date:'medium'}}</td><td>{{t.type}}</td><td>{{t.currency}}</td><td class="numeric">{{t.amount|number:'1.2-8'}}</td></tr>}</tbody></table></section>`})
 export class DashboardComponent {
- private api=inject(ApiService);accounts=signal<Account[]>([]);cash=signal<CashBalance[]>([]);transactions=signal<CashTransaction[]>([]);positions=signal<Position[]>([]);orders=signal<Order[]>([]);
+ private api=inject(ApiService);private orderStatus=inject(OrderStatusStreamService);liveStatus=signal<OrderStatusUpdate|null>(null);accounts=signal<Account[]>([]);cash=signal<CashBalance[]>([]);transactions=signal<CashTransaction[]>([]);positions=signal<Position[]>([]);orders=signal<Order[]>([]);
  busy=signal(false);error=signal('');message=signal('');rate=signal<number|null>(null);rateSource=signal('');accountId='';currency='USD';amount=1000;fromCurrency='USD';toCurrency='GBP';convertAmount=100;
- constructor(){this.api.accounts().subscribe(x=>{this.accounts.set(x);this.accountId=x[0]?.accountId??'';this.loadTransactions();});this.refresh();this.api.positions().subscribe(x=>this.positions.set(x));this.api.orders().subscribe(x=>this.orders.set(x));}
+ constructor(){this.orderStatus.stream().subscribe({next:s=>{this.liveStatus.set(s);this.api.orders().subscribe(x=>this.orders.set(x));this.api.positions().subscribe(x=>this.positions.set(x));this.refresh();this.loadTransactions();},error:()=>{}});this.api.accounts().subscribe(x=>{this.accounts.set(x);this.accountId=x[0]?.accountId??'';this.loadTransactions();});this.refresh();this.api.positions().subscribe(x=>this.positions.set(x));this.api.orders().subscribe(x=>this.orders.set(x));}
  refresh(){this.api.cash().subscribe(x=>this.cash.set(x));}loadTransactions(){if(this.accountId)this.api.cashTransactions(this.accountId).subscribe(x=>this.transactions.set(x));}
  deposit(){this.move('deposit');}withdraw(){this.move('withdraw');}
  private move(kind:'deposit'|'withdraw'){this.start();const call=kind==='deposit'?this.api.deposit({accountId:this.accountId,currency:this.currency,amount:this.amount}):this.api.withdraw({accountId:this.accountId,currency:this.currency,amount:this.amount});call.subscribe({next:()=>this.finish(kind==='deposit'?'Deposit completed':'Withdrawal completed'),error:e=>this.fail(e)});}
