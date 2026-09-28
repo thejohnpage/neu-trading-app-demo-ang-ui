@@ -4,7 +4,7 @@ import { Account,CashBalance,CashConversion,CashTransaction,ClientSegmentReport,
 export interface ApiVersion { application:string; version:string; timestamp:string; }
 @Injectable({providedIn:'root'})
 export class ApiService {
- private readonly http=inject(HttpClient); private readonly base='http://10.14.132.8:8081/api/v1';
+ private readonly http=inject(HttpClient); private readonly base='http://localhost:8081/api/v1';
  registerClient(body:{email:string;firstName:string;lastName:string;password:string;clientSegment:string}){return this.http.post<any>(`${this.base}/registration/client`,body);}
  version(){return this.http.get<ApiVersion>(`${this.base}/version`);}
  instruments(){return this.http.get<Instrument[]>(`${this.base}/instruments`);} quote(symbol:string){return this.http.get<Quote>(`${this.base}/instruments/${encodeURIComponent(symbol)}/quote`);}
