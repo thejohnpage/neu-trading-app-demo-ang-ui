@@ -32,7 +32,9 @@ export class ApiService {
  adminClients(){return this.http.get<any[]>(`${this.base}/admin/clients`);}
  adminClientSegments(){return this.http.get<any[]>(`${this.base}/admin/clients/segments`);}
  updateAdminClient(id:string,body:any){return this.http.put<any>(`${this.base}/admin/clients/${id}`,body);}
+ kafkaStatus(){return this.http.get<any>(`${this.base}/admin/kafka/status`);}
 }
+
 
 
 
