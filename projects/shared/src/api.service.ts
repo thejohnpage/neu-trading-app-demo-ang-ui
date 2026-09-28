@@ -33,6 +33,7 @@ export class ApiService {
  adminClientSegments(){return this.http.get<any[]>(`${this.base}/admin/clients/segments`);}
  updateAdminClient(id:string,body:any){return this.http.put<any>(`${this.base}/admin/clients/${id}`,body);}
  kafkaStatus(){return this.http.get<any>(`${this.base}/admin/kafka/status`);}
+ kafkaEvents(limit=20){return this.http.get<any[]>(`${this.base}/admin/kafka/events`,{params:{limit}});}
 }
 
 
