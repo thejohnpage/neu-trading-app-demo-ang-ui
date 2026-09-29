@@ -25,5 +25,3 @@ body{font-family:Inter,Segoe UI,Arial,sans-serif;background:#f3f6f9}.admin-shell
 
 .kafka-groups{margin-top:20px}.kafka-groups .negative{font-weight:750}
 
-/* Shared session-header presentation: keep Admin consistent with Client. */
-.session-header .session-timer{display:flex;align-items:baseline;gap:7px;padding:7px 10px;border:1px solid rgba(203,213,225,.32);border-radius:7px;background:rgba(255,255,255,.07);font-variant-numeric:tabular-nums;transition:background .2s,border-color .2s,color .2s}.session-header .session-timer small{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#aebed1;font-weight:700}.session-header .session-timer strong{font-size:16px;letter-spacing:.025em;color:#f8fafc;line-height:1}.session-header .session-timer.expiring{background:#7f1d1d;border-color:#ef4444;box-shadow:0 0 0 1px rgba(239,68,68,.16)}.session-header .session-timer.expiring small,.session-header .session-timer.expiring strong{color:#fff}
