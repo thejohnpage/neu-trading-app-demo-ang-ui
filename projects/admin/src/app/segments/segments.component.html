@@ -1,0 +1,1 @@
+<h1>Client segments</h1><table><thead><tr><th>Segment</th><th>Clients</th><th>Trades</th><th>Quantity</th><th>Notional</th></tr></thead><tbody>@for(r of rows();track r.client_segment){<tr><td><strong>{{r.client_segment}}</strong></td><td>{{r.clients}}</td><td>{{r.trade_count}}</td><td>{{r.total_quantity}}</td><td>{{r.total_notional|number:'1.2-2'}}</td></tr>}</tbody></table>
