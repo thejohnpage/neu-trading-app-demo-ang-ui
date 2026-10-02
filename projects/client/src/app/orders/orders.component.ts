@@ -1,0 +1,3 @@
+import { Component,inject,signal } from '@angular/core'; import { ApiService } from '@shared/api.service'; import { Order,OrderEvent } from '@shared/models';
+@Component({selector:'app-orders',standalone:true,styleUrl: './orders.component.scss', templateUrl: './orders.component.html'})
+export class OrdersComponent{private api=inject(ApiService);orders=signal<Order[]>([]);selected=signal<Order|null>(null);events=signal<OrderEvent[]>([]);constructor(){this.refresh();}refresh(){this.api.orders().subscribe(x=>{this.orders.set(x);if(x[0])this.select(x[0]);});}select(o:Order){this.selected.set(o);this.api.orderEvents(o.orderId).subscribe(x=>this.events.set(x));}}

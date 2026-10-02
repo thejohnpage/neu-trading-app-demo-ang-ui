@@ -1,0 +1,10 @@
+<h1>Trade</h1><div class="trade-grid"><section class="panel">
+<label>Account</label><select [(ngModel)]="accountId">@for(a of accounts();track a.accountId){<option [value]="a.accountId">{{a.accountNumber}}</option>}</select>
+<label>Instrument</label><select [(ngModel)]="symbol" (ngModelChange)="loadQuote()">@for(i of instruments();track i.instrumentId){<option [value]="i.symbol">{{i.symbol}} — {{i.name}}</option>}</select>
+@if(quote();as q){<div class="quote"><div><small>Bid</small><strong>{{q.bid|number:'1.2-8'}}</strong></div><div><small>Ask</small><strong>{{q.ask|number:'1.2-8'}}</strong></div></div><p><small>Trade currency</small> <strong>{{q.quoteCurrency}}</strong> · <small>Available cash</small> <strong>{{availableCash(q.quoteCurrency)|number:'1.2-8'}} {{q.quoteCurrency}}</strong></p>}
+<label>Side</label><div class="side"><button [class.active]="side==='BUY'" (click)="side='BUY'">BUY</button><button [class.active]="side==='SELL'" (click)="side='SELL'">SELL</button></div>
+<label>Quantity</label><input type="number" min="0.00000001" step="any" [(ngModel)]="quantity"><button class="primary" (click)="submit()" [disabled]="busy()">{{busy()?'Submitting…':'Submit order'}}</button>
+</section>
+@if(result();as r){<section class="panel success"><h2>Order accepted</h2><p><strong>{{r.side}} {{r.quantity|number:'1.0-8'}} {{symbol}}</strong></p><p>Status: {{r.status}}</p><p>Order: <strong>{{shortId(r.orderId)}}</strong></p></section>}
+@if(error()){<section class="panel error"><h2>Order rejected</h2><p>{{error()}}</p><p>Use the Portfolio cash wallet to deposit funds or explicitly convert currency before retrying. Trades never perform silent FX conversion.</p></section>}
+</div>

@@ -1,0 +1,1 @@
+<h1>Trading volume</h1><table><thead><tr><th>Trade date</th><th>Trades</th><th>Quantity</th><th>Notional</th></tr></thead><tbody>@for(r of rows();track r.trade_date){<tr><td>{{r.trade_date}}</td><td>{{r.trade_count}}</td><td>{{r.total_quantity}}</td><td>{{r.total_notional|number:'1.2-2'}}</td></tr>}</tbody></table>
