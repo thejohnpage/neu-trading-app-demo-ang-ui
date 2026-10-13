@@ -13,7 +13,9 @@
     "test:client": "ng test client --watch=false",
     "test:admin": "ng test admin --watch=false",
     "test:watch:client": "ng test client",
-    "test:watch:admin": "ng test admin"
+    "test:watch:admin": "ng test admin",
+    "format": "prettier --write \"projects/**/*.{ts,html,scss,css}\"",
+    "format:check": "prettier --check \"projects/**/*.{ts,html,scss,css}\""
   },
   "dependencies": {
     "@angular/common": "^21.0.0",
@@ -33,7 +35,8 @@
     "@angular/compiler-cli": "^21.0.0",
     "typescript": "~5.9.2",
     "vitest": "^4.0.0",
-    "jsdom": "^27.0.0"
+    "jsdom": "^27.0.0",
+    "prettier": "^3.6.2"
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,
