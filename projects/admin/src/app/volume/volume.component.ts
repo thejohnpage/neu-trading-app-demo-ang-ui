@@ -1,2 +1,18 @@
-import { Component,inject,signal } from '@angular/core'; import { DecimalPipe } from '@angular/common'; import { ApiService } from '@shared/api.service'; import { VolumeReport } from '@shared/models';
-@Component({selector:'app-volume',standalone:true,imports:[DecimalPipe],styleUrl: './volume.component.scss', templateUrl: './volume.component.html'}) export class VolumeComponent{private api=inject(ApiService);rows=signal<VolumeReport[]>([]);constructor(){this.api.reportVolume().subscribe(x=>this.rows.set(x));}}
+import { Component, inject, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { ApiService } from '@shared/api.service';
+import { VolumeReport } from '@shared/models';
+@Component({
+  selector: 'app-volume',
+  standalone: true,
+  imports: [DecimalPipe],
+  styleUrl: './volume.component.scss',
+  templateUrl: './volume.component.html',
+})
+export class VolumeComponent {
+  private api = inject(ApiService);
+  rows = signal<VolumeReport[]>([]);
+  constructor() {
+    this.api.reportVolume().subscribe((x) => this.rows.set(x));
+  }
+}
