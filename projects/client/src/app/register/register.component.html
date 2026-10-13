@@ -1,0 +1,8 @@
+<div class="login-page"><section class="login-card registration-card"><div class="login-brand">NEU Trading</div><p class="login-context">Client Brokerage</p><h1>Open an account</h1><p class="muted">Create your client profile and brokerage account.</p>
+<form (ngSubmit)="register()"><div class="registration-grid"><div><label>First name</label><input name="firstName" [(ngModel)]="firstName" required></div><div><label>Last name</label><input name="lastName" [(ngModel)]="lastName" required></div></div>
+<label>Email</label><input name="email" type="email" autocomplete="email" [(ngModel)]="email" required>
+<label>Password</label><input name="password" type="password" autocomplete="new-password" [(ngModel)]="password" minlength="10" required>
+<label>Confirm password</label><input name="confirmPassword" type="password" autocomplete="new-password" [(ngModel)]="confirmPassword" required>
+<label>Client segment</label><select name="clientSegment" [(ngModel)]="clientSegment"><option value="RETAIL">Retail</option><option value="AFFLUENT">Affluent</option><option value="INSTITUTIONAL">Institutional</option></select>
+<button class="primary" type="submit" [disabled]="busy">{{busy?'Creating account…':'Create account'}}</button></form>
+@if(error){<p class="login-error">{{error}}</p>}<p class="login-switch">Already registered? <a routerLink="/login">Sign in</a></p></section></div>

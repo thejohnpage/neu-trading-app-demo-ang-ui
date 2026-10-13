@@ -1,0 +1,4 @@
+<h1>Order inspection</h1><div class="split">
+<table><thead><tr><th>Order</th><th>Side</th><th>Qty</th><th>Status</th><th>Submitted</th></tr></thead><tbody>@for(o of orders();track o.orderId){<tr (click)="select(o)" [class.selected]="selected()?.orderId===o.orderId"><td title="{{o.orderId}}">{{shortId(o.orderId)}}</td><td>{{o.side}}</td><td>{{o.quantity}}</td><td>{{o.status}}</td><td>{{o.submittedAt|date:'medium'}}</td></tr>}</tbody></table>
+@if(selected();as o){<section><div class="panel"><h2>Lifecycle — {{shortId(o.orderId)}}</h2><p class="muted">Technical ID: {{o.orderId}}</p><ol>@for(e of events();track e.eventId){<li><strong>{{e.eventType}}</strong><small>{{e.eventTime|date:'medium'}}</small></li>}</ol></div><div class="panel"><h2>Pricing decision</h2><pre>{{pricing()|json}}</pre></div></section>}
+</div>

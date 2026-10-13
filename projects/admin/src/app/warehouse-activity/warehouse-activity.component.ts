@@ -1,0 +1,8 @@
+import { Component,inject,signal } from '@angular/core';import { DatePipe,DecimalPipe } from '@angular/common';import { ApiService } from '@shared/api.service';import { ReportSummary,TradeActivity } from '@shared/models';import { SimpleChartComponent,ChartDatum } from '@shared/simple-chart/simple-chart.component';
+@Component({selector:'app-warehouse-activity',standalone:true,imports:[DatePipe,DecimalPipe,SimpleChartComponent],styleUrl: './warehouse-activity.component.scss', templateUrl: './warehouse-activity.component.html'})
+export class WarehouseActivityComponent{
+ private api=inject(ApiService);summary=signal<ReportSummary|null>(null);recent=signal<TradeActivity[]>([]);loadsByDay=signal<ChartDatum[]>([]);tradesBySymbol=signal<ChartDatum[]>([]);
+ constructor(){this.load();}
+ load(){this.api.reportSummary().subscribe(x=>this.summary.set(x));this.api.reportActivity().subscribe(rows=>{const sorted=[...rows].sort((a,b)=>Date.parse(b.loaded_at)-Date.parse(a.loaded_at));this.recent.set(sorted.slice(0,20));const days=new Map<string,number>(),symbols=new Map<string,number>();for(const r of rows){const d=new Date(r.loaded_at);const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;days.set(key,(days.get(key)??0)+1);symbols.set(r.symbol,(symbols.get(r.symbol)??0)+1);}this.loadsByDay.set([...days].sort(([a],[b])=>a.localeCompare(b)).map(([key,value])=>({label:new Date(key+'T00:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}),value})));this.tradesBySymbol.set([...symbols].sort((a,b)=>b[1]-a[1]).map(([label,value])=>({label,value})));});}
+ shortId(id:string){return 'ORD-'+id.replaceAll('-','').slice(0,8).toUpperCase();}
+}

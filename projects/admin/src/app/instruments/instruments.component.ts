@@ -1,0 +1,2 @@
+import { Component,inject,signal } from '@angular/core'; import { DecimalPipe } from '@angular/common'; import { ApiService } from '@shared/api.service'; import { InstrumentReport } from '@shared/models';
+@Component({selector:'app-instrument-report',standalone:true,imports:[DecimalPipe],styleUrl: './instruments.component.scss', templateUrl: './instruments.component.html'}) export class InstrumentsComponent{private api=inject(ApiService);rows=signal<InstrumentReport[]>([]);constructor(){this.api.reportInstruments().subscribe(x=>this.rows.set(x));}}
