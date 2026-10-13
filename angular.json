@@ -23,5 +23,8 @@
         "serve": {"builder": "@angular/build:dev-server", "configurations": {"development": {"buildTarget": "admin:build"}}, "defaultConfiguration": "development"}
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
