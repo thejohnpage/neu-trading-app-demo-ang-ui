@@ -8,7 +8,12 @@
     "start:admin": "ng serve admin --port 4201",
     "build": "npm run build:client && npm run build:admin",
     "build:client": "ng build client",
-    "build:admin": "ng build admin"
+    "build:admin": "ng build admin",
+    "test": "npm run test:client && npm run test:admin",
+    "test:client": "ng test client --watch=false",
+    "test:admin": "ng test admin --watch=false",
+    "test:watch:client": "ng test client",
+    "test:watch:admin": "ng test admin"
   },
   "dependencies": {
     "@angular/common": "^21.0.0",
@@ -26,6 +31,8 @@
     "@angular/build": "^21.0.0",
     "@angular/cli": "^21.0.0",
     "@angular/compiler-cli": "^21.0.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "^4.0.0",
+    "jsdom": "^27.0.0"
   }
 }
