@@ -9,8 +9,41 @@
       "sourceRoot": "projects/client/src",
       "prefix": "app",
       "architect": {
-        "build": {"builder": "@angular/build:application", "options": {"outputPath": "dist/client", "index": "projects/client/src/index.html", "browser": "projects/client/src/main.ts", "tsConfig": "projects/client/tsconfig.app.json", "assets": [{"glob":"**/*","input":"projects/client/public"}], "styles": ["projects/client/src/styles.css"]}},
-        "serve": {"builder": "@angular/build:dev-server", "configurations": {"development": {"buildTarget": "client:build"}}, "defaultConfiguration": "development"}
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": "dist/client",
+            "index": "projects/client/src/index.html",
+            "browser": "projects/client/src/main.ts",
+            "tsConfig": "projects/client/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/client/public"
+              }
+            ],
+            "styles": [
+              "projects/client/src/styles.css"
+            ]
+          }
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "development": {
+              "buildTarget": "client:build"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/client/tsconfig.spec.json",
+            "buildTarget": "client:build",
+            "runner": "vitest"
+          }
+        }
       }
     },
     "admin": {
@@ -19,8 +52,41 @@
       "sourceRoot": "projects/admin/src",
       "prefix": "app",
       "architect": {
-        "build": {"builder": "@angular/build:application", "options": {"outputPath": "dist/admin", "index": "projects/admin/src/index.html", "browser": "projects/admin/src/main.ts", "tsConfig": "projects/admin/tsconfig.app.json", "assets": [{"glob":"**/*","input":"projects/admin/public"}], "styles": ["projects/admin/src/styles.css"]}},
-        "serve": {"builder": "@angular/build:dev-server", "configurations": {"development": {"buildTarget": "admin:build"}}, "defaultConfiguration": "development"}
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": "dist/admin",
+            "index": "projects/admin/src/index.html",
+            "browser": "projects/admin/src/main.ts",
+            "tsConfig": "projects/admin/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/admin/public"
+              }
+            ],
+            "styles": [
+              "projects/admin/src/styles.css"
+            ]
+          }
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "development": {
+              "buildTarget": "admin:build"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/admin/tsconfig.spec.json",
+            "buildTarget": "admin:build",
+            "runner": "vitest"
+          }
+        }
       }
     }
   }
