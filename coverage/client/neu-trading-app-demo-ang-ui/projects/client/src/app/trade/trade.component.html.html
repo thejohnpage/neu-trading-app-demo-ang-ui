@@ -1,0 +1,115 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for neu-trading-app-demo-ang-ui/projects/client/src/app/trade/trade.component.html</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../../../../../index.html">All files</a> / <a href="index.html">neu-trading-app-demo-ang-ui/projects/client/src/app/trade</a> trade.component.html</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/107</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/14</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/7</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/9</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >&lt;h1&gt;<span class="cstat-no" title="statement not covered" >T</span>rade<span class="cstat-no" title="statement not covered" >&lt;</span>/h1&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>div class="trade-grid"&gt;&lt;section class="panel"&gt;</span>
+&lt;label&gt;<span class="cstat-no" title="statement not covered" >Account<span class="cstat-no" title="statement not covered" >&lt;</span>/label&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>select <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >[</span>(ngModel)]="accountId"&gt;<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >@</span></span>for(a of a</span>ccounts();track a.accountId){<span class="cstat-no" title="statement not covered" >&lt;</span>option <span class="cstat-no" title="statement not covered" >[</span>value]="a.accountId"&gt;<span class="cstat-no" title="statement not covered" >{</span>{a.accountNumber}}<span class="cstat-no" title="statement not covered" >&lt;</span>/option&gt;}<span class="cstat-no" title="statement not covered" >&lt;</span>/select&gt;</span>
+<span class="cstat-no" title="statement not covered" >&lt;label&gt;<span class="cstat-no" title="statement not covered" >I</span>nstrument<span class="cstat-no" title="statement not covered" >&lt;</span>/label&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>select <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >[</span>(ngModel)]="symbol" <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span></span>ngModelChange)="l</span>oadQuote()"</span>&gt;<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >@</span>for(i of inst</span>ruments();track i.instrumentId){<span class="cstat-no" title="statement not covered" >&lt;</span>option <span class="cstat-no" title="statement not covered" >[</span>value]="i.symbol"&gt;<span class="cstat-no" title="statement not covered" >{</span>{i.symbol}} — {{i.name}}<span class="cstat-no" title="statement not covered" >&lt;</span>/option&gt;}<span class="cstat-no" title="statement not covered" >&lt;</span>/select&gt;</span>
+<span class="cstat-no" title="statement not covered" >@if(quote();as q){<span class="cstat-no" title="statement not covered" >&lt;</span>div class="quote"&gt;&lt;div&gt;&lt;small&gt;<span class="cstat-no" title="statement not covered" >B</span>id<span class="cstat-no" title="statement not covered" >&lt;</span>/small&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>strong&gt;<span class="cstat-no" title="statement not covered" >{</span>{q.bid|number:'1.2-8'}}<span class="cstat-no" title="statement not covered" >&lt;</span>/strong&gt;&lt;/div&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>div&gt;&lt;small&gt;<span class="cstat-no" title="statement not covered" >A</span>sk<span class="cstat-no" title="statement not covered" >&lt;</span>/small&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>strong&gt;<span class="cstat-no" title="statement not covered" >{</span>{q.ask|number:'1.2-8'}}<span class="cstat-no" title="statement not covered" >&lt;</span>/strong&gt;&lt;/div&gt;&lt;/div&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>p&gt;&lt;small&gt;<span class="cstat-no" title="statement not covered" >T</span>rade currency<span class="cstat-no" title="statement not covered" >&lt;</span>/small&gt; <span class="cstat-no" title="statement not covered" >&lt;</span>strong&gt;<span class="cstat-no" title="statement not covered" >{</span>{q.quoteCurrency}}<span class="cstat-no" title="statement not covered" >&lt;</span>/strong&gt; <span class="cstat-no" title="statement not covered" >·</span> <span class="cstat-no" title="statement not covered" >&lt;</span>small&gt;<span class="cstat-no" title="statement not covered" >A</span>vailable cash<span class="cstat-no" title="statement not covered" >&lt;</span>/small&gt; <span class="cstat-no" title="statement not covered" >&lt;</span>strong&gt;<span class="cstat-no" title="statement not covered" >{</span>{availableCash(q.quoteCurrency)|number:'1.2-8'}} {{q.quoteCurrency}}<span class="cstat-no" title="statement not covered" >&lt;</span>/strong&gt;&lt;/p&gt;}</span>
+<span class="cstat-no" title="statement not covered" >&lt;label&gt;<span class="cstat-no" title="statement not covered" >S</span>ide<span class="cstat-no" title="statement not covered" >&lt;</span>/label&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>div class="side"&gt;&lt;button <span class="cstat-no" title="statement not covered" >[</span>class.active]="side==='BUY'" <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>click)="side='</span>BUY'"</span>&gt;<span class="cstat-no" title="statement not covered" >B</span>UY<span class="cstat-no" title="statement not covered" >&lt;</span>/button&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>button <span class="cstat-no" title="statement not covered" >[</span>class.active]="side==='SELL'" <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>click)="side='</span>SELL'"</span>&gt;<span class="cstat-no" title="statement not covered" >S</span>ELL<span class="cstat-no" title="statement not covered" >&lt;</span>/button&gt;&lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" >&lt;label&gt;<span class="cstat-no" title="statement not covered" >Q</span>uantity<span class="cstat-no" title="statement not covered" >&lt;</span>/label&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>input type="number" min="0.00000001" step="any" <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >[</span>(ngModel)]="quantity"&gt;<span class="cstat-no" title="statement not covered" >&lt;</span></span>button class="primary" <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>click)="s</span>ubmit()"</span> <span class="cstat-no" title="statement not covered" >[</span>disabled]="busy()"&gt;<span class="cstat-no" title="statement not covered" >{</span>{busy()?'Submitting…':'Submit order'}}<span class="cstat-no" title="statement not covered" >&lt;</span>/button&gt;</span>
+&lt;/section&gt;
+<span class="cstat-no" title="statement not covered" >@if(result();as r){<span class="cstat-no" title="statement not covered" >&lt;</span>section class="panel success"&gt;&lt;h2&gt;<span class="cstat-no" title="statement not covered" >O</span>rder accepted<span class="cstat-no" title="statement not covered" >&lt;</span>/h2&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>p&gt;&lt;strong&gt;<span class="cstat-no" title="statement not covered" >{</span>{r.side}} {{r.quantity|number:'1.0-8'}} {{symbol}}<span class="cstat-no" title="statement not covered" >&lt;</span>/strong&gt;&lt;/p&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>p&gt;<span class="cstat-no" title="statement not covered" >S</span>tatus: {{r.status}}<span class="cstat-no" title="statement not covered" >&lt;</span>/p&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>p&gt;<span class="cstat-no" title="statement not covered" >O</span>rder: <span class="cstat-no" title="statement not covered" >&lt;</span>strong&gt;<span class="cstat-no" title="statement not covered" >{</span>{shortId(r.orderId)}}<span class="cstat-no" title="statement not covered" >&lt;</span>/strong&gt;&lt;/p&gt;&lt;/section&gt;}</span>
+<span class="cstat-no" title="statement not covered" >@if(error()){<span class="cstat-no" title="statement not covered" >&lt;</span>section class="panel error"&gt;&lt;h2&gt;<span class="cstat-no" title="statement not covered" >O</span>rder rejected<span class="cstat-no" title="statement not covered" >&lt;</span>/h2&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>p&gt;<span class="cstat-no" title="statement not covered" >{</span>{error()}}<span class="cstat-no" title="statement not covered" >&lt;</span>/p&gt;<span class="cstat-no" title="statement not covered" >&lt;</span>p&gt;<span class="cstat-no" title="statement not covered" >U</span>se the Portfolio cash wallet to deposit funds or explicitly convert currency before retrying. Trades never perform silent FX conversion.<span class="cstat-no" title="statement not covered" >&lt;</span>/p&gt;&lt;/section&gt;}</span>
+<span class="cstat-no" title="statement not covered" >&lt;/div&gt;</span>
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-10-13T13:56:47.674Z
+            </div>
+        <script src="../../../../../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../../../../../sorter.js"></script>
+        <script src="../../../../../../block-navigation.js"></script>
+    </body>
+</html>
+    

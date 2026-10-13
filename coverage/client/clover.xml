@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1791899807910" clover="3.2.0">
+  <project timestamp="1791899807910" name="All files">
+    <metrics statements="150" coveredstatements="15" conditionals="328" coveredconditionals="72" methods="185" coveredmethods="11" elements="663" coveredelements="98" complexity="0" loc="150" ncloc="150" packages="12" files="24" classes="24"/>
+    <package name="neu-trading-app-demo-ang-ui">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="package.json" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\package.json">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="neu-trading-app-demo-ang-ui.projects.client.src.app.app">
+      <metrics statements="15" coveredstatements="1" conditionals="11" coveredconditionals="6" methods="4" coveredmethods="1"/>
+      <file name="app.component.html" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\app\app.component.html">
+        <metrics statements="14" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+      </file>
+      <file name="app.component.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\app\app.component.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="11" coveredconditionals="6" methods="4" coveredmethods="1"/>
+        <line num="9" count="1" type="cond" truecount="6" falsecount="5"/>
+      </file>
+    </package>
+    <package name="neu-trading-app-demo-ang-ui.projects.client.src.app.dashboard">
+      <metrics statements="28" coveredstatements="1" conditionals="55" coveredconditionals="6" methods="43" coveredmethods="1"/>
+      <file name="dashboard.component.html" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\dashboard\dashboard.component.html">
+        <metrics statements="17" coveredstatements="0" conditionals="22" coveredconditionals="0" methods="11" coveredmethods="0"/>
+        <line num="1" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="2" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="15" count="0" type="cond" truecount="0" falsecount="8"/>
+        <line num="17" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+      </file>
+      <file name="dashboard.component.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\dashboard\dashboard.component.ts">
+        <metrics statements="11" coveredstatements="1" conditionals="33" coveredconditionals="6" methods="32" coveredmethods="1"/>
+        <line num="10" count="1" type="cond" truecount="6" falsecount="4"/>
+        <line num="11" count="0" type="cond" truecount="0" falsecount="6"/>
+        <line num="12" count="0" type="cond" truecount="0" falsecount="7"/>
+        <line num="13" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="cond" truecount="0" falsecount="2"/>
+      </file>
+    </package>
+    <package name="neu-trading-app-demo-ang-ui.projects.client.src.app.home">
+      <metrics statements="9" coveredstatements="1" conditionals="13" coveredconditionals="6" methods="5" coveredmethods="1"/>
+      <file name="home.component.html" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\home\home.component.html">
+        <metrics statements="8" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+      </file>
+      <file name="home.component.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\home\home.component.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="13" coveredconditionals="6" methods="5" coveredmethods="1"/>
+        <line num="8" count="1" type="cond" truecount="6" falsecount="7"/>
+      </file>
+    </package>
+    <package name="neu-trading-app-demo-ang-ui.projects.client.src.app.markets">
+      <metrics statements="2" coveredstatements="1" conditionals="16" coveredconditionals="6" methods="7" coveredmethods="1"/>
+      <file name="markets.component.html" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\markets\markets.component.html">
+        <metrics statements="1" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="0" type="cond" truecount="0" falsecount="4"/>
+      </file>
+      <file name="markets.component.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\markets\markets.component.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="12" coveredconditionals="6" methods="6" coveredmethods="1"/>
+        <line num="3" count="1" type="cond" truecount="6" falsecount="6"/>
+      </file>
+    </package>
+    <package name="neu-trading-app-demo-ang-ui.projects.client.src.app.orders">
+      <metrics statements="2" coveredstatements="1" conditionals="19" coveredconditionals="6" methods="7" coveredmethods="1"/>
+      <file name="orders.component.html" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\orders\orders.component.html">
+        <metrics statements="1" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="0" type="cond" truecount="0" falsecount="4"/>
+      </file>
+      <file name="orders.component.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\orders\orders.component.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="15" coveredconditionals="6" methods="6" coveredmethods="1"/>
+        <line num="3" count="1" type="cond" truecount="6" falsecount="9"/>
+      </file>
+    </package>
+    <package name="neu-trading-app-demo-ang-ui.projects.client.src.app.register">
+      <metrics statements="10" coveredstatements="2" conditionals="32" coveredconditionals="9" methods="11" coveredmethods="2"/>
+      <file name="register.component.html" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\register\register.component.html">
+        <metrics statements="8" coveredstatements="0" conditionals="16" coveredconditionals="0" methods="7" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="2" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="3" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="4" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="5" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="6" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="7" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="8" count="0" type="cond" truecount="0" falsecount="2"/>
+      </file>
+      <file name="register.component.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\register\register.component.ts">
+        <metrics statements="2" coveredstatements="2" conditionals="16" coveredconditionals="9" methods="4" coveredmethods="2"/>
+        <line num="3" count="1" type="cond" truecount="6" falsecount="4"/>
+        <line num="4" count="2" type="cond" truecount="3" falsecount="3"/>
+      </file>
+    </package>
+    <package name="neu-trading-app-demo-ang-ui.projects.client.src.app.trade">
+      <metrics statements="15" coveredstatements="1" conditionals="43" coveredconditionals="6" methods="20" coveredmethods="1"/>
+      <file name="trade.component.html" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\trade\trade.component.html">
+        <metrics statements="9" coveredstatements="0" conditionals="14" coveredconditionals="0" methods="7" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="2" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="3" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="4" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="6" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="8" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="9" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="10" count="0" type="stmt"/>
+      </file>
+      <file name="trade.component.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\client\src\app\trade\trade.component.ts">
+        <metrics statements="6" coveredstatements="1" conditionals="29" coveredconditionals="6" methods="13" coveredmethods="1"/>
+        <line num="9" count="1" type="cond" truecount="6" falsecount="4"/>
+        <line num="10" count="0" type="cond" truecount="0" falsecount="7"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="13" count="0" type="cond" truecount="0" falsecount="6"/>
+        <line num="14" count="0" type="cond" truecount="0" falsecount="2"/>
+      </file>
+    </package>
+    <package name="neu-trading-app-demo-ang-ui.projects.shared.src">
+      <metrics statements="45" coveredstatements="3" conditionals="47" coveredconditionals="9" methods="58" coveredmethods="0"/>
+      <file name="api.service.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\shared\src\api.service.ts">
+        <metrics statements="31" coveredstatements="1" conditionals="12" coveredconditionals="3" methods="39" coveredmethods="0"/>
+        <line num="6" count="3" type="cond" truecount="3" falsecount="2"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="cond" truecount="0" falsecount="6"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="cond" truecount="0" falsecount="1"/>
+      </file>
+      <file name="auth.service.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\shared\src\auth.service.ts">
+        <metrics statements="11" coveredstatements="1" conditionals="20" coveredconditionals="3" methods="13" coveredmethods="0"/>
+        <line num="4" count="2" type="cond" truecount="3" falsecount="2"/>
+        <line num="5" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="9" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="12" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="cond" truecount="0" falsecount="2"/>
+      </file>
+      <file name="order-status-stream.service.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\shared\src\order-status-stream.service.ts">
+        <metrics statements="3" coveredstatements="1" conditionals="15" coveredconditionals="3" methods="6" coveredmethods="0"/>
+        <line num="3" count="1" type="cond" truecount="3" falsecount="2"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="5" count="0" type="cond" truecount="0" falsecount="10"/>
+      </file>
+    </package>
+    <package name="neu-trading-app-demo-ang-ui.projects.shared.src.session-header">
+      <metrics statements="6" coveredstatements="1" conditionals="16" coveredconditionals="6" methods="7" coveredmethods="1"/>
+      <file name="session-header.component.html" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\shared\src\session-header\session-header.component.html">
+        <metrics statements="1" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="0" type="cond" truecount="0" falsecount="2"/>
+      </file>
+      <file name="session-header.component.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\shared\src\session-header\session-header.component.ts">
+        <metrics statements="5" coveredstatements="1" conditionals="14" coveredconditionals="6" methods="6" coveredmethods="1"/>
+        <line num="4" count="1" type="cond" truecount="6" falsecount="4"/>
+        <line num="5" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="8" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="neu-trading-app-demo-ang-ui.projects.shared.src.session-timeout">
+      <metrics statements="9" coveredstatements="1" conditionals="32" coveredconditionals="6" methods="14" coveredmethods="1"/>
+      <file name="session-timeout.component.html" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\shared\src\session-timeout\session-timeout.component.html">
+        <metrics statements="1" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <line num="1" count="0" type="cond" truecount="0" falsecount="6"/>
+      </file>
+      <file name="session-timeout.component.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\shared\src\session-timeout\session-timeout.component.ts">
+        <metrics statements="8" coveredstatements="1" conditionals="26" coveredconditionals="6" methods="12" coveredmethods="1"/>
+        <line num="3" count="1" type="cond" truecount="6" falsecount="4"/>
+        <line num="4" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="6" count="0" type="cond" truecount="0" falsecount="8"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="neu-trading-app-demo-ang-ui.projects.shared.src.simple-chart">
+      <metrics statements="8" coveredstatements="1" conditionals="44" coveredconditionals="6" methods="9" coveredmethods="1"/>
+      <file name="simple-chart.component.html" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\shared\src\simple-chart\simple-chart.component.html">
+        <metrics statements="1" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="cond" truecount="0" falsecount="2"/>
+      </file>
+      <file name="simple-chart.component.ts" path="C:\Users\Administrator\source\repos\neu-trading-app-demo-ang-ui\projects\shared\src\simple-chart\simple-chart.component.ts">
+        <metrics statements="7" coveredstatements="1" conditionals="42" coveredconditionals="6" methods="9" coveredmethods="1"/>
+        <line num="5" count="1" type="cond" truecount="6" falsecount="4"/>
+        <line num="7" count="0" type="cond" truecount="0" falsecount="5"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="cond" truecount="0" falsecount="7"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="cond" truecount="0" falsecount="6"/>
+        <line num="12" count="0" type="cond" truecount="0" falsecount="14"/>
+      </file>
+    </package>
+  </project>
+</coverage>
