@@ -40,6 +40,9 @@
       @if (rbac.has('ROLE_MANAGEMENT')) {
         <a routerLink="/roles" routerLinkActive="active">Roles & Capabilities</a>
       }
+      <p>API Documentation</p>
+      <a routerLink="/api-docs/spring-boot" routerLinkActive="active">Spring Boot Swagger</a>
+      <a routerLink="/api-docs/nestjs" routerLinkActive="active">NestJS Swagger</a>
     </nav>
   </aside>
   <div class="admin-workspace">
