@@ -1,2 +1,18 @@
-import { Component,inject,signal } from '@angular/core'; import { DecimalPipe } from '@angular/common'; import { ApiService } from '@shared/api.service'; import { ClientSegmentReport } from '@shared/models';
-@Component({selector:'app-segments',standalone:true,imports:[DecimalPipe],styleUrl: './segments.component.scss', templateUrl: './segments.component.html'}) export class SegmentsComponent{private api=inject(ApiService);rows=signal<ClientSegmentReport[]>([]);constructor(){this.api.reportSegments().subscribe(x=>this.rows.set(x));}}
+import { Component, inject, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { ApiService } from '@shared/api.service';
+import { ClientSegmentReport } from '@shared/models';
+@Component({
+  selector: 'app-segments',
+  standalone: true,
+  imports: [DecimalPipe],
+  styleUrl: './segments.component.scss',
+  templateUrl: './segments.component.html',
+})
+export class SegmentsComponent {
+  private api = inject(ApiService);
+  rows = signal<ClientSegmentReport[]>([]);
+  constructor() {
+    this.api.reportSegments().subscribe((x) => this.rows.set(x));
+  }
+}
