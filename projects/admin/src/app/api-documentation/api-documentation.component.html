@@ -21,7 +21,7 @@
     <iframe
       [src]="iframeUrl()"
       [attr.title]="selected().title"
-      [attr.data-refresh-key]="refreshKey"
+      [attr.data-refresh-key]="refreshKey()"
       loading="eager"
       referrerpolicy="no-referrer"
     ></iframe>
