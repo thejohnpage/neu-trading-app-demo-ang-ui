@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 type ApiSource = 'spring-boot' | 'nestjs';
@@ -26,11 +26,11 @@ export class ApiDocumentationComponent {
   };
   readonly selected = computed(() => this.sources[this.source()]);
   readonly iframeUrl = computed<SafeResourceUrl>(() =>
-    this.sanitizer.bypassSecurityTrustResourceUrl(this.selected().url),
+    this.sanitizer.bypassSecurityTrustResourceUrl(\n      this.refreshKey() === 0 ? this.selected().url : `${this.selected().url}?reload=${this.refreshKey()}`,\n    ),
   );
   // Incrementing the frame key forces a fresh embedded Swagger UI instance.
   refreshKey = 0;
   refresh(): void {
-    this.refreshKey++;
+    this.refreshKey.update((value) => value + 1);
   }
 }
