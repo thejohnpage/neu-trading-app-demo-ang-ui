@@ -24,6 +24,6 @@ describe('ApiDocumentationComponent', () => {
     fixture.componentRef.setInput('source', 'nestjs');
     fixture.detectChanges();
     fixture.componentInstance.refresh();
-    expect(fixture.componentInstance.refreshKey).toBe(1);
+    expect(fixture.componentInstance.refreshKey()).toBe(1);
   });
 });
