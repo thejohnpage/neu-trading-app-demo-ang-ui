@@ -1,0 +1,29 @@
+<section class="api-documentation">
+  <header class="docs-heading">
+    <div>
+      <p class="eyebrow">Developer tools</p>
+      <h1>{{ selected().title }}</h1>
+      <p>{{ selected().description }}</p>
+    </div>
+    <div class="actions">
+      <button type="button" (click)="refresh()">Reload docs</button>
+      <a [href]="selected().url" target="_blank" rel="noopener noreferrer">Open in new tab ↗</a>
+    </div>
+  </header>
+
+  <p class="notice">
+    The documentation is served by the corresponding backend, not by Angular.
+    Both services must be running and reachable from this browser. If the embedded
+    page is blocked by the server's framing policy, use <strong>Open in new tab</strong>.
+  </p>
+
+  <div class="frame-container">
+    <iframe
+      [src]="iframeUrl()"
+      [attr.title]="selected().title"
+      [attr.data-refresh-key]="refreshKey()"
+      loading="eager"
+      referrerpolicy="no-referrer"
+    ></iframe>
+  </div>
+</section>

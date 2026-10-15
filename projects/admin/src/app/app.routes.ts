@@ -11,6 +11,7 @@ import { KafkaMonitorComponent } from './kafka-monitor/kafka-monitor.component';
 import { ClientsComponent } from './clients/clients.component';
 import { UsersComponent } from './users/users.component';
 import { AuditComponent } from './audit/audit.component';
+import { ApiDocumentationComponent } from './api-documentation/api-documentation.component';
 import { LoginComponent } from '@shared/login/login.component';
 import { authGuard } from '@shared/auth.guard';
 import { capabilityGuard } from '@shared/capability.guard';
@@ -82,6 +83,18 @@ export const routes: Routes = [
     component: RolesComponent,
     canActivate: [authGuard, capabilityGuard],
     data: { capability: 'ROLE_MANAGEMENT' },
+  },
+  {
+    path: 'api-docs/spring-boot',
+    component: ApiDocumentationComponent,
+    canActivate: [authGuard],
+    data: { source: 'spring-boot' },
+  },
+  {
+    path: 'api-docs/nestjs',
+    component: ApiDocumentationComponent,
+    canActivate: [authGuard],
+    data: { source: 'nestjs' },
   },
   { path: '**', redirectTo: '' },
 ];
