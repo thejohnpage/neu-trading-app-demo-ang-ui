@@ -26,10 +26,14 @@ export class ApiDocumentationComponent {
   };
   readonly selected = computed(() => this.sources[this.source()]);
   readonly iframeUrl = computed<SafeResourceUrl>(() =>
-    this.sanitizer.bypassSecurityTrustResourceUrl(\n      this.refreshKey() === 0 ? this.selected().url : `${this.selected().url}?reload=${this.refreshKey()}`,\n    ),
+    this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.refreshKey() === 0
+        ? this.selected().url
+        : `${this.selected().url}${this.selected().url.includes('?') ? '&' : '?'}reload=${this.refreshKey()}`,
+    ),
   );
   // Incrementing the frame key forces a fresh embedded Swagger UI instance.
-  refreshKey = 0;
+  readonly refreshKey = signal(0);
   refresh(): void {
     this.refreshKey.update((value) => value + 1);
   }
