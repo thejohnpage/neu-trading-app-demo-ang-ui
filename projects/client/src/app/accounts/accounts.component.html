@@ -1,0 +1,28 @@
+<section class="accounts-page">
+  <div class="accounts-heading">
+    <div>
+      <h1>My Accounts</h1>
+      <p>Manage your brokerage accounts. Each account has its own cash and positions.</p>
+    </div>
+    <button type="button" (click)="openAccount()" [disabled]="creating() || loading()">
+      {{ creating() ? 'Opening account…' : 'Open another USD account' }}
+    </button>
+  </div>
+  @if (error()) { <p class="accounts-error" role="alert">{{ error() }}</p> }
+  @if (message()) { <p class="accounts-success" role="status">{{ message() }}</p> }
+  @if (loading()) {
+    <p>Loading accounts…</p>
+  } @else {
+    <div class="accounts-grid">
+      @for (account of accounts(); track account.accountId) {
+        <article class="account-card">
+          <h2>{{ account.accountNumber }}</h2>
+          <p>Base currency: {{ account.baseCurrency }}</p>
+          <p>Status: {{ account.status }}</p>
+        </article>
+      } @empty {
+        <p>No accounts found.</p>
+      }
+    </div>
+  }
+</section>
