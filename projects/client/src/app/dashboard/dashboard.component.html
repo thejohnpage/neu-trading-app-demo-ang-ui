@@ -5,6 +5,7 @@
     <p class="muted">Holdings, cash and recent account activity.</p>
   </div>
   <select class="account-picker" [(ngModel)]="accountId" (ngModelChange)="loadTransactions()">
+    <option value="ALL">All Accounts</option>
     @for (a of accounts(); track a.accountId) {
       <option [value]="a.accountId">{{ a.accountNumber }}</option>
     }
@@ -24,29 +25,33 @@
 }
 <section class="portfolio-summary">
   <article>
-    <small>Cash currencies</small><strong>{{ cash().length }}</strong>
+    <small>Cash currencies</small><strong>{{ visibleCash().length }}</strong>
   </article>
   <article>
-    <small>Positions</small><strong>{{ positions().length }}</strong>
+    <small>Positions</small><strong>{{ visiblePositions().length }}</strong>
   </article>
   <article>
-    <small>Orders</small><strong>{{ orders().length }}</strong>
+    <small>Orders</small><strong>{{ visibleOrders().length }}</strong>
   </article>
 </section>
 
+@if (selectedAccountId() !== "ALL" || (visiblePositions().every(p => p.currency === visiblePositions()[0]?.currency))) {
 <section class="dashboard-charts">
   <app-simple-chart
     title="Portfolio allocation"
     subtitle="Market value by ticker"
     type="donut"
-    [data]="allocation()"
+    [data]="visibleAllocation()"
   /><app-simple-chart
     title="Unrealized gain / loss"
     subtitle="Current P/L by ticker"
-    [data]="profitLoss()"
+    [data]="visibleProfitLoss()"
     prefix="$"
   />
 </section>
+} @else {
+  <p class="muted">Charts combining multiple currencies require FX conversion into a reporting currency.</p>
+}
 
 <section class="portfolio-section">
   <div class="section-title">
@@ -68,7 +73,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (p of positions(); track p.instrumentId) {
+      @for (p of visiblePositions(); track p.accountId + p.instrumentId) {
         <tr>
           <td>
             <strong>{{ p.symbol }}</strong
@@ -113,7 +118,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (c of cash(); track c.accountId + c.currency) {
+      @for (c of visibleCash(); track c.accountId + c.currency) {
         <tr>
           <td>
             <strong>{{ c.currency }}</strong>
@@ -125,6 +130,8 @@
     </tbody>
   </table>
 
+  @if (!canMoveCash()) { <p class="muted">Select an individual account to deposit, withdraw, convert currency or view cash transactions.</p> }
+  @if (canMoveCash()) {
   <details class="money-tools">
     <summary>Manage cash & currency</summary>
     <div class="trade-grid">
@@ -157,6 +164,7 @@
       </section>
     </div>
   </details>
+  }
   @if (message()) {
     <p class="success-message">{{ message() }}</p>
   }
@@ -185,7 +193,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (o of orders(); track o.orderId) {
+      @for (o of visibleOrders(); track o.orderId) {
         <tr>
           <td>{{ shortId(o.orderId, 'ORD') }}</td>
           <td>{{ o.side }}</td>
