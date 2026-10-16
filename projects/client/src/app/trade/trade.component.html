@@ -4,7 +4,7 @@
     <label>Account</label
     ><select [ngModel]="accountId" (ngModelChange)="onAccountChange($event)">
       @for (a of accounts(); track a.accountId) {
-        <option [value]="a.accountId">{{ a.accountNumber }}</option>
+        <option [value]="a.accountId">{{ a.accountName || a.accountNumber }}</option>
       }
     </select>
     @if (needsFunding()) {
