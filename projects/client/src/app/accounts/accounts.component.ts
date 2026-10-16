@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 import { ApiService } from '@shared/api.service';
 import { Account } from '@shared/models';
 import { finalize } from 'rxjs';
@@ -7,7 +8,7 @@ import { finalize } from 'rxjs';
 @Component({
   selector: 'app-accounts',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, DecimalPipe],
   templateUrl: './accounts.component.html',
   styleUrl: './accounts.component.scss',
 })
