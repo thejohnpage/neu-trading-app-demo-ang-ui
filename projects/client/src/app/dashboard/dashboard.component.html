@@ -4,7 +4,7 @@
     <h1>Portfolio</h1>
     <p class="muted">Holdings, cash and recent account activity.</p>
   </div>
-  <select class="account-picker" [(ngModel)]="accountId" (ngModelChange)="loadTransactions()">
+  <select class="account-picker" [ngModel]="selectedAccountId()" (ngModelChange)="selectAccount($event)" aria-label="Portfolio account">
     <option value="ALL">All Accounts</option>
     @for (a of accounts(); track a.accountId) {
       <option [value]="a.accountId">{{ a.accountNumber }}</option>
