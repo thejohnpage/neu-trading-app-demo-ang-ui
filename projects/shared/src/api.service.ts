@@ -63,6 +63,26 @@ export class ApiService {
   cash() {
     return this.http.get<CashBalance[]>(`${this.base}/me/cash`);
   }
+  portfolioValuation(currency: string, accountId?: string) {
+    return this.http.get<{
+      reportingCurrency: string;
+      accountId: string | null;
+      totalCash: string;
+      totalMarketValue: string;
+      totalCostBasis: string;
+      unrealizedProfitLoss: string;
+      totalEquity: string;
+      cash: { accountId: string; currency: string; nativeBalance: string; reportedBalance: string }[];
+      positions: {
+        accountId: string; instrumentId: string; symbol: string; currency: string;
+        nativeMarketValue: string; nativeCostBasis: string; nativeProfitLoss: string;
+        reportedMarketValue: string; reportedCostBasis: string; reportedProfitLoss: string;
+      }[];
+      rates: { fromCurrency: string; toCurrency: string; rate: string; source: string; quotedAt: string | null }[];
+    }>(`${this.base}/me/portfolio/valuation`, {
+      params: accountId ? { currency, accountId } : { currency },
+    });
+  }
   positions() {
     return this.http.get<Position[]>(`${this.base}/me/positions`);
   }
