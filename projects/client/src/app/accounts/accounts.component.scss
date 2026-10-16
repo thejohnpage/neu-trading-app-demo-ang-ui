@@ -1,0 +1,11 @@
+.accounts-page { padding: 8px 0 24px; }
+.accounts-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 22px; }
+.accounts-heading h1 { margin-bottom: 6px; }
+.accounts-heading p { color: #667085; }
+.accounts-heading button { background: #172033; color: #fff; border: 0; border-radius: 6px; padding: 12px 18px; cursor: pointer; }
+.accounts-heading button:disabled { opacity: .6; cursor: wait; }
+.accounts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.account-card { background: #fff; border: 1px solid #dde3ea; border-radius: 8px; padding: 20px; }
+.account-card h2 { margin-top: 0; font-size: 18px; }
+.accounts-error { color: #991b1b; }
+.accounts-success { color: #166534; }
