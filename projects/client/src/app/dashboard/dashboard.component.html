@@ -7,7 +7,7 @@
   <select class="account-picker" [ngModel]="selectedAccountId()" (ngModelChange)="selectAccount($event)" aria-label="Portfolio account">
     <option value="ALL">All Accounts</option>
     @for (a of accounts(); track a.accountId) {
-      <option [value]="a.accountId">{{ a.accountNumber }}</option>
+      <option [value]="a.accountId">{{ a.accountName || a.accountNumber }}</option>
     }
   </select>
 </section>
