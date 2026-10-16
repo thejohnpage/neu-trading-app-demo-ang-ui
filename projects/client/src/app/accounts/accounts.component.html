@@ -2,12 +2,33 @@
   <div class="accounts-heading">
     <div>
       <h1>My Accounts</h1>
-      <p>Manage your brokerage accounts. Each account has its own cash and positions.</p>
+      <p>Open and manage your brokerage accounts.</p>
     </div>
-    <button type="button" (click)="openAccount()" [disabled]="creating() || loading()">
-      {{ creating() ? 'Opening account…' : 'Open another USD account' }}
-    </button>
   </div>
+
+  <form class="account-create" (ngSubmit)="openAccount()">
+    <h2>Open another account</h2>
+    <div class="account-fields">
+      <label>Account name
+        <input name="accountName" [(ngModel)]="accountName" required maxlength="100" placeholder="e.g. UK Trading" />
+      </label>
+      <label>Account type
+        <select name="accountType" [(ngModel)]="accountType">
+          <option value="INDIVIDUAL">Individual Brokerage</option>
+        </select>
+      </label>
+      <label>Base currency
+        <select name="baseCurrency" [(ngModel)]="baseCurrency">
+          @for (currency of currencies; track currency) {
+            <option [value]="currency">{{ currency }}</option>
+          }
+        </select>
+      </label>
+    </div>
+    <p class="account-help">The base currency is fixed after creation. The account opens active with a zero cash balance.</p>
+    <button type="submit" [disabled]="busy() || loading() || !accountName.trim()">Open account</button>
+  </form>
+
   @if (error()) { <p class="accounts-error" role="alert">{{ error() }}</p> }
   @if (message()) { <p class="accounts-success" role="status">{{ message() }}</p> }
   @if (loading()) {
@@ -16,9 +37,33 @@
     <div class="accounts-grid">
       @for (account of accounts(); track account.accountId) {
         <article class="account-card">
-          <h2>{{ account.accountNumber }}</h2>
+          <h2>{{ account.accountName || account.accountNumber }}</h2>
+          <p class="account-number">{{ account.accountNumber }}</p>
+          <p>Type: {{ account.accountType || 'INDIVIDUAL' }}</p>
           <p>Base currency: {{ account.baseCurrency }}</p>
-          <p>Status: {{ account.status }}</p>
+          <p>Status: <strong>{{ account.status }}</strong></p>
+          @if (account.status === 'ACTIVE') {
+            @if (editingId === account.accountId) {
+              <form (ngSubmit)="saveEdit(account)" class="account-edit">
+                <label>Account name
+                  <input name="editName" [(ngModel)]="editName" required maxlength="100" />
+                </label>
+                <button type="submit" [disabled]="busy() || !editName.trim()">Save</button>
+                <button type="button" (click)="editingId = null">Cancel</button>
+              </form>
+            } @else if (closingId === account.accountId) {
+              <div class="account-confirm">
+                <p>Close this account? Cash and holdings must be zero, and no orders may be outstanding. Financial history will be retained.</p>
+                <button type="button" (click)="closeAccount(account)" [disabled]="busy()">Confirm closure</button>
+                <button type="button" (click)="closingId = null">Cancel</button>
+              </div>
+            } @else {
+              <div class="account-actions">
+                <button type="button" (click)="startEdit(account)" [disabled]="busy()">Rename</button>
+                <button type="button" (click)="confirmClose(account)" [disabled]="busy()">Close account</button>
+              </div>
+            }
+          }
         </article>
       } @empty {
         <p>No accounts found.</p>
