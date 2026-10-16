@@ -35,7 +35,7 @@
     <div class="fx-details">
       <strong>FX valuation rates</strong>
       @for (fx of fxDetails(); track fx.currency) {
-        <p>1 {{ fx.currency }} = {{ fx.rate | number: '1.4-8' }} {{ reportingCurrency() }} · {{ fx.source }} · {{ fx.quotedAt | date: 'medium' }}</p>
+        <p>1 {{ fx.currency }} = {{ fx.rate }} {{ reportingCurrency() }} · {{ fx.source }} · {{ fx.quotedAt ? (fx.quotedAt | date: 'medium') : 'Identity' }}</p>
       }
     </div>
   }
@@ -124,7 +124,7 @@
           </td>
           <td class="numeric">
             @if (fxReady()) {
-              {{ p.marketValue * (fxRates()[p.currency]?.rate ?? 1) | number: '1.2-2' }}
+              {{ valuation()?.positions?.length ? reportedMarketValue(p.accountId, p.instrumentId) : '—' }}
             } @else { — }
           </td>
         </tr>
@@ -160,7 +160,7 @@
             <strong>{{ c.currency }}</strong>
           </td>
           <td class="numeric">{{ c.balance | number: '1.2-2' }}</td>
-          <td class="numeric">@if (fxReady()) { {{ c.balance * (fxRates()[c.currency]?.rate ?? 1) | number: '1.2-2' }} } @else { — }</td>
+          <td class="numeric">@if (fxReady()) { {{ reportedCash(c.accountId, c.currency) }} } @else { — }</td>
           <td>{{ c.updatedAt | date: 'medium' }}</td>
         </tr>
       }
