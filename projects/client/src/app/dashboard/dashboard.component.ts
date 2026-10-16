@@ -39,6 +39,10 @@ export class DashboardComponent {
   rateSource = signal('');
   get accountId(): string { return this.selectedAccountId() === 'ALL' ? '' : this.selectedAccountId(); }
   set accountId(id: string) { this.selectedAccountId.set(id); }
+  selectAccount(id: string): void {
+    this.selectedAccountId.set(id);
+    this.loadTransactions();
+  }
   currency = 'USD';
   amount = 1000;
   fromCurrency = 'USD';
