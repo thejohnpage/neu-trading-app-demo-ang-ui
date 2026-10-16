@@ -9,14 +9,16 @@ describe('TradeComponent behavior', () => {
   const api = {
     accounts: vi.fn(() => of([{ accountId: 'account-1' }])),
     cash: vi.fn(() => of([{ accountId: 'account-1', currency: 'USD', balance: 1500 }])),
+    positions: vi.fn(() => of([])),
     instruments: vi.fn(() => of([])),
-    quote: vi.fn(() => of({ bid: 99, ask: 100 })),
+    quote: vi.fn(() => of({ bid: 99, ask: 100, quoteCurrency: 'USD' })),
     submitOrder: vi.fn(() => of({ orderId: 'order-1' })),
   };
   let component: TradeComponent;
   beforeEach(() => {
     vi.clearAllMocks();
     api.submitOrder.mockImplementation(() => of({ orderId: 'order-1' }));
+    api.positions.mockImplementation(() => of([]));
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useValue: api },
@@ -30,6 +32,33 @@ describe('TradeComponent behavior', () => {
     expect(component.accountId).toBe('account-1');
     expect(component.availableCash('USD')).toBe(1500);
     expect(component.availableCash('GBP')).toBe(0);
+  });
+  it('disables sell when no holding exists for the selected ticker', () => {
+    expect(component.canBuy()).toBe(true);
+    expect(component.canSell()).toBe(false);
+  });
+  it('disables both actions for an unfunded account', () => {
+    component.cash.set([{ accountId: 'account-1', currency: 'USD', balance: 0, updatedAt: '2026-10-16T00:00:00Z' }]);
+    expect(component.canBuy()).toBe(false);
+    expect(component.canSell()).toBe(false);
+    expect(component.canSubmit()).toBe(false);
+  });
+  it('enables sell only for an owned ticker position', () => {
+    component.positions.set([{ accountId: 'account-1', symbol: 'MSFT', quantity: 5 } as any]);
+    expect(component.canSell()).toBe(true);
+    component.symbol = 'AAPL';
+    expect(component.canSell()).toBe(false);
+  });
+  it('permits selling an owned holding even with no cash', () => {
+    component.positions.set([{ accountId: 'account-1', symbol: 'MSFT', quantity: 5 } as any]);
+    component.cash.set([{ accountId: 'account-1', currency: 'USD', balance: 0, updatedAt: '2026-10-16T00:00:00Z' }]);
+    expect(component.canSell()).toBe(true);
+    expect(component.canBuy()).toBe(false);
+    expect(component.needsFunding()).toBe(false);
+  });
+  it('shows a funding requirement when both holdings and cash are empty', () => {
+    component.cash.set([{ accountId: 'account-1', currency: 'USD', balance: 0, updatedAt: '2026-10-16T00:00:00Z' }]);
+    expect(component.needsFunding()).toBe(true);
   });
   it('formats order identifiers', () => {
     expect(component.shortId('abcd1234-5678-9012')).toBe('ORD-ABCD1234');

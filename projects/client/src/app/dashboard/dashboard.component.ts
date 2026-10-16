@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '@shared/api.service';
@@ -19,6 +19,14 @@ export class DashboardComponent {
   liveStatus = signal<OrderStatusUpdate | null>(null);
   accounts = signal<Account[]>([]);
   cash = signal<CashBalance[]>([]);
+  readonly selectedAccountId = signal('ALL');
+  readonly visibleCash = computed(() => this.cash().filter(c => this.selectedAccountId() === 'ALL' || c.accountId === this.selectedAccountId()));
+  readonly visiblePositions = computed(() => this.positions().filter(p => this.selectedAccountId() === 'ALL' || p.accountId === this.selectedAccountId()));
+  readonly visibleOrders = computed(() => this.orders().filter(o => this.selectedAccountId() === 'ALL' || o.accountId === this.selectedAccountId()));
+  readonly visibleAllocation = computed<ChartDatum[]>(() => this.visiblePositions().filter(p => p.marketValue > 0).map(p => ({ label: p.symbol, value: p.marketValue })));
+  readonly visibleProfitLoss = computed<ChartDatum[]>(() => this.visiblePositions().map(p => ({ label: p.symbol, value: p.unrealizedGainLoss })));
+  readonly selectedAccount = computed(() => this.accounts().find(a => a.accountId === this.selectedAccountId()));
+  readonly canMoveCash = computed(() => this.selectedAccountId() !== 'ALL');
   transactions = signal<CashTransaction[]>([]);
   positions = signal<Position[]>([]);
   orders = signal<Order[]>([]);
@@ -29,7 +37,12 @@ export class DashboardComponent {
   message = signal('');
   rate = signal<number | null>(null);
   rateSource = signal('');
-  accountId = '';
+  get accountId(): string { return this.selectedAccountId() === 'ALL' ? '' : this.selectedAccountId(); }
+  set accountId(id: string) { this.selectedAccountId.set(id); }
+  selectAccount(id: string): void {
+    this.selectedAccountId.set(id);
+    this.loadTransactions();
+  }
   currency = 'USD';
   amount = 1000;
   fromCurrency = 'USD';
@@ -48,7 +61,7 @@ export class DashboardComponent {
     });
     this.api.accounts().subscribe((x) => {
       this.accounts.set(x);
-      this.accountId = x[0]?.accountId ?? '';
+      this.accountId = 'ALL';
       this.loadTransactions();
     });
     this.refresh();
@@ -66,8 +79,12 @@ export class DashboardComponent {
     this.api.cash().subscribe((x) => this.cash.set(x));
   }
   loadTransactions() {
-    if (this.accountId)
-      this.api.cashTransactions(this.accountId).subscribe((x) => this.transactions.set(x));
+    if (!this.accountId) { this.transactions.set([]); return; }
+    const requestedAccountId = this.accountId;
+    this.api.cashTransactions(requestedAccountId).subscribe({
+      next: x => { if (this.accountId === requestedAccountId) this.transactions.set(x); },
+      error: () => this.error.set('Unable to load account transactions.'),
+    });
   }
   deposit() {
     this.move('deposit');
@@ -76,6 +93,7 @@ export class DashboardComponent {
     this.move('withdraw');
   }
   private move(kind: 'deposit' | 'withdraw') {
+    if (!this.accountId) { this.error.set('Select an individual account to manage cash.'); return; }
     this.start();
     const call =
       kind === 'deposit'
@@ -106,6 +124,7 @@ export class DashboardComponent {
     });
   }
   convert() {
+    if (!this.accountId) { this.error.set('Select an individual account to convert cash.'); return; }
     this.start();
     this.api
       .convertCash({

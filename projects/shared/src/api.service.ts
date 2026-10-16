@@ -48,8 +48,17 @@ export class ApiService {
   accounts() {
     return this.http.get<Account[]>(`${this.base}/me/accounts`);
   }
-  createAccount() {
-    return this.http.post<Account>(`${this.base}/me/accounts`, {});
+  createAccount(body: { accountName: string; accountType: 'INDIVIDUAL'; baseCurrency: string }) {
+    return this.http.post<Account>(`${this.base}/me/accounts`, body);
+  }
+  account(id: string) {
+    return this.http.get<Account>(`${this.base}/me/accounts/${encodeURIComponent(id)}`);
+  }
+  renameAccount(id: string, accountName: string) {
+    return this.http.patch<Account>(`${this.base}/me/accounts/${encodeURIComponent(id)}`, { accountName });
+  }
+  closeAccount(id: string) {
+    return this.http.delete<Account>(`${this.base}/me/accounts/${encodeURIComponent(id)}`);
   }
   cash() {
     return this.http.get<CashBalance[]>(`${this.base}/me/cash`);
@@ -73,6 +82,25 @@ export class ApiService {
     amount: number;
   }) {
     return this.http.post<CashConversion>(`${this.base}/me/cash/conversions`, body);
+  }
+  transferCash(body: {
+    transferId: string;
+    fromAccountId: string;
+    toAccountId: string;
+    amount: number;
+  }) {
+    return this.http.post<{
+      transferId: string;
+      fromAccountId: string;
+      toAccountId: string;
+      fromCurrency: string;
+      toCurrency: string;
+      debitedAmount: number;
+      creditedAmount: number;
+      exchangeRate: number;
+      rateSource: string;
+      createdAt: string;
+    }>(`${this.base}/me/cash/transfers`, body);
   }
   cashTransactions(accountId: string) {
     return this.http.get<CashTransaction[]>(`${this.base}/me/cash/transactions`, {
