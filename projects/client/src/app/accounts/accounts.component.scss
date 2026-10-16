@@ -23,3 +23,9 @@
 .account-edit, .account-confirm { margin-top: 16px; }
 .account-edit input { margin-bottom: 12px; }
 @media (max-width: 760px) { .account-fields { grid-template-columns: 1fr; } }
+
+.initial-deposit, .account-deposit label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; max-width: 260px; margin: 14px 0; }
+.initial-deposit input, .account-deposit input { padding: 10px; border: 1px solid #cbd5e1; border-radius: 5px; font: inherit; }
+.account-deposit { margin-top: 16px; }
+.account-deposit button { padding: 9px 14px; border: 1px solid #cbd5e1; border-radius: 5px; margin-right: 8px; cursor: pointer; }
+.account-deposit button:disabled { opacity: .5; cursor: not-allowed; }
