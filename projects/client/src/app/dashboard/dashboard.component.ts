@@ -1,7 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { forkJoin } from 'rxjs';
 import { ApiService } from '@shared/api.service';
 import { OrderStatusStreamService, OrderStatusUpdate } from '@shared/order-status-stream.service';
 import { SimpleChartComponent, ChartDatum } from '@shared/simple-chart/simple-chart.component';
@@ -24,39 +23,37 @@ export class DashboardComponent {
   readonly visibleCash = computed(() => this.cash().filter(c => this.selectedAccountId() === 'ALL' || c.accountId === this.selectedAccountId()));
   readonly visiblePositions = computed(() => this.positions().filter(p => this.selectedAccountId() === 'ALL' || p.accountId === this.selectedAccountId()));
   readonly visibleOrders = computed(() => this.orders().filter(o => this.selectedAccountId() === 'ALL' || o.accountId === this.selectedAccountId()));
-  readonly visibleAllocation = computed<ChartDatum[]>(() => this.valuedPositions().filter(p => p.marketValue > 0).map(p => ({ label: p.symbol, value: p.marketValue })));
-  readonly visibleProfitLoss = computed<ChartDatum[]>(() => this.valuedPositions().map(p => ({ label: p.symbol, value: p.unrealizedGainLoss })));
   readonly selectedAccount = computed(() => this.accounts().find(a => a.accountId === this.selectedAccountId()));
   readonly canMoveCash = computed(() => this.selectedAccountId() !== 'ALL');
   readonly reportingCurrencies = ['USD', 'GBP', 'EUR', 'CAD', 'AUD'];
   readonly reportingCurrency = signal('USD');
-  readonly fxRates = signal<Record<string, { rate: number; source: string; quotedAt: string }>>({});
+  readonly valuation = signal<{
+    reportingCurrency: string; totalCash: string; totalMarketValue: string;
+    totalCostBasis: string; unrealizedProfitLoss: string; totalEquity: string;
+    cash: { accountId: string; currency: string; nativeBalance: string; reportedBalance: string }[];
+    positions: { accountId: string; instrumentId: string; symbol: string; currency: string;
+      nativeMarketValue: string; nativeCostBasis: string; nativeProfitLoss: string;
+      reportedMarketValue: string; reportedCostBasis: string; reportedProfitLoss: string }[];
+    rates: { fromCurrency: string; toCurrency: string; rate: string; source: string; quotedAt: string | null }[];
+  } | null>(null);
   readonly fxLoading = signal(true);
   readonly fxError = signal('');
   private fxRequest = 0;
-  readonly sourceCurrencies = computed(() => [...new Set([
-    ...this.visibleCash().map(c => c.currency),
-    ...this.visiblePositions().map(p => p.currency),
-  ])].sort());
-  readonly fxReady = computed(() => !this.fxLoading() && !this.fxError() &&
-    this.sourceCurrencies().every(c => c === this.reportingCurrency() || !!this.fxRates()[c]));
-  readonly valuedCash = computed(() => this.fxReady()
-    ? this.visibleCash().map(c => ({ ...c, reportedBalance: c.balance * (this.fxRates()[c.currency]?.rate ?? 1) }))
-    : []);
-  readonly valuedPositions = computed(() => this.fxReady()
-    ? this.visiblePositions().map(p => {
-        const rate = this.fxRates()[p.currency]?.rate ?? 1;
-        return { ...p, marketValue: p.marketValue * rate,
-          costBasis: p.costBasis * rate, unrealizedGainLoss: p.unrealizedGainLoss * rate };
-      })
-    : []);
-  readonly totalCash = computed(() => this.valuedCash().reduce((sum,c) => sum + c.reportedBalance, 0));
-  readonly totalMarketValue = computed(() => this.valuedPositions().reduce((sum,p) => sum + p.marketValue, 0));
-  readonly totalCostBasis = computed(() => this.valuedPositions().reduce((sum,p) => sum + p.costBasis, 0));
-  readonly totalProfitLoss = computed(() => this.totalMarketValue() - this.totalCostBasis());
-  readonly totalEquity = computed(() => this.totalCash() + this.totalMarketValue());
-  readonly fxDetails = computed(() => this.sourceCurrencies().filter(c => c !== this.reportingCurrency())
-    .map(c => ({ currency: c, ...this.fxRates()[c] })).filter(x => x.rate));
+  readonly fxReady = computed(() => !this.fxLoading() && !this.fxError() && !!this.valuation());
+  readonly totalCash = computed(() => this.valuation()?.totalCash ?? '0');
+  readonly totalMarketValue = computed(() => this.valuation()?.totalMarketValue ?? '0');
+  readonly totalCostBasis = computed(() => this.valuation()?.totalCostBasis ?? '0');
+  readonly totalProfitLoss = computed(() => this.valuation()?.unrealizedProfitLoss ?? '0');
+  readonly totalEquity = computed(() => this.valuation()?.totalEquity ?? '0');
+  readonly fxDetails = computed(() => (this.valuation()?.rates ?? [])
+    .filter(r => r.fromCurrency !== r.toCurrency)
+    .map(r => ({ currency: r.fromCurrency, rate: r.rate, source: r.source, quotedAt: r.quotedAt })));
+  readonly valuedPositions = computed(() => this.valuation()?.positions ?? []);
+  readonly visibleAllocation = computed<ChartDatum[]>(() => this.valuedPositions()
+    .filter(p => Number(p.reportedMarketValue) > 0)
+    .map(p => ({ label: p.symbol, value: Number(p.reportedMarketValue) })));
+  readonly visibleProfitLoss = computed<ChartDatum[]>(() => this.valuedPositions()
+    .map(p => ({ label: p.symbol, value: Number(p.reportedProfitLoss) })));
   transactions = signal<CashTransaction[]>([]);
   positions = signal<Position[]>([]);
   orders = signal<Order[]>([]);
@@ -81,27 +78,21 @@ export class DashboardComponent {
   }
   refreshFx(): void {
     const token = ++this.fxRequest;
-    const target = this.reportingCurrency();
-    const currencies = this.sourceCurrencies().filter(c => c !== target);
-    this.fxError.set('');
-    this.fxRates.set({});
-    if (!currencies.length) { this.fxLoading.set(false); return; }
     this.fxLoading.set(true);
-    forkJoin(currencies.map(c => this.api.fxRate(c, target))).subscribe({
-      next: results => {
+    this.fxError.set('');
+    this.valuation.set(null);
+    this.api.portfolioValuation(
+      this.reportingCurrency(),
+      this.selectedAccountId() === 'ALL' ? undefined : this.selectedAccountId(),
+    ).subscribe({
+      next: result => {
         if (token !== this.fxRequest) return;
-        if (results.some(r => !Number.isFinite(r.rate) || r.rate <= 0)) {
-          this.fxError.set('An invalid FX rate was returned. Consolidated values are unavailable.');
-        } else {
-          this.fxRates.set(Object.fromEntries(results.map(r => [r.fromCurrency, {
-            rate: r.rate, source: r.source, quotedAt: r.quotedAt,
-          }])));
-        }
+        this.valuation.set(result);
         this.fxLoading.set(false);
       },
       error: () => {
         if (token !== this.fxRequest) return;
-        this.fxError.set('FX rates unavailable. Consolidated totals and charts are hidden to avoid mixing currencies.');
+        this.fxError.set('Portfolio valuation unavailable. Totals and charts are hidden.');
         this.fxLoading.set(false);
       },
     });
