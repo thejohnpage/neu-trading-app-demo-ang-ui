@@ -83,6 +83,25 @@ export class ApiService {
   }) {
     return this.http.post<CashConversion>(`${this.base}/me/cash/conversions`, body);
   }
+  transferCash(body: {
+    transferId: string;
+    fromAccountId: string;
+    toAccountId: string;
+    amount: number;
+  }) {
+    return this.http.post<{
+      transferId: string;
+      fromAccountId: string;
+      toAccountId: string;
+      fromCurrency: string;
+      toCurrency: string;
+      debitedAmount: number;
+      creditedAmount: number;
+      exchangeRate: number;
+      rateSource: string;
+      createdAt: string;
+    }>(`${this.base}/me/cash/transfers`, body);
+  }
   cashTransactions(accountId: string) {
     return this.http.get<CashTransaction[]>(`${this.base}/me/cash/transactions`, {
       params: { accountId },
