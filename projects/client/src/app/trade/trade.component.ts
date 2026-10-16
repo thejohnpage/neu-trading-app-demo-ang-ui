@@ -1,9 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { ApiService } from '@shared/api.service';
-import { Account, CashBalance, Instrument, Order, Quote } from '@shared/models';
+import { Account, CashBalance, Instrument, Order, Position, Quote } from '@shared/models';
 
 @Component({
   selector: 'app-trade',
@@ -18,11 +18,24 @@ export class TradeComponent {
   accounts = signal<Account[]>([]);
   instruments = signal<Instrument[]>([]);
   cash = signal<CashBalance[]>([]);
+  positions = signal<Position[]>([]);
+  readonly funded = computed(() => this.cash().some(c => c.accountId === this.accountId && c.balance > 0));
+  readonly heldQuantity = computed(() => this.positions().filter(p => p.accountId === this.accountId && p.symbol === this.symbol).reduce((sum, p) => sum + p.quantity, 0));
+  readonly canBuy = computed(() => !!this.accountId && !!this.quote() && this.funded() && this.availableCash(this.quote()!.quoteCurrency) > 0);
+  readonly canSell = computed(() => !!this.accountId && this.funded() && this.heldQuantity() > 0);
+  readonly canSubmit = computed(() => !this.busy() && this.quantity > 0 && (this.side === 'BUY' ? this.canBuy() : this.canSell()) && (this.side !== 'SELL' || this.quantity <= this.heldQuantity()));
   quote = signal<Quote | null>(null);
   result = signal<Order | null>(null);
   error = signal('');
   busy = signal(false);
   accountId = '';
+  onAccountChange(id: string) { this.accountId = id; this.ensureValidSide(); }
+  onSymbolChange(symbol: string) { this.symbol = symbol; this.quote.set(null); this.loadQuote(); this.ensureValidSide(); }
+  private ensureValidSide() { if (this.side === 'SELL' && !this.canSell()) this.side = 'BUY'; }
+  private refreshBalances() {
+    this.api.cash().subscribe({ next: x => { this.cash.set(x); this.ensureValidSide(); }, error: () => this.error.set('Unable to load cash balances.') });
+    this.api.positions().subscribe({ next: x => { this.positions.set(x); this.ensureValidSide(); }, error: () => this.error.set('Unable to load positions.') });
+  }
   symbol = 'AAPL';
   side: 'BUY' | 'SELL' = 'BUY';
   quantity = 1;
@@ -33,14 +46,20 @@ export class TradeComponent {
       this.accounts.set(x);
       this.accountId = x[0]?.accountId ?? '';
     });
-    this.api.cash().subscribe((x) => this.cash.set(x));
+    this.refreshBalances();
     this.api.instruments().subscribe((x) => {
       this.instruments.set(x);
       this.loadQuote();
     });
   }
   loadQuote() {
-    if (this.symbol) this.api.quote(this.symbol).subscribe((x) => this.quote.set(x));
+    if (this.symbol) {
+      const requestedSymbol = this.symbol;
+      this.api.quote(requestedSymbol).subscribe({
+        next: x => { if (this.symbol === requestedSymbol) this.quote.set(x); },
+        error: () => { if (this.symbol === requestedSymbol) { this.quote.set(null); this.error.set('Unable to load quote.'); } },
+      });
+    }
   }
   availableCash(currency: string) {
     return (
@@ -52,6 +71,7 @@ export class TradeComponent {
     return `ORD-${id.replaceAll('-', '').slice(0, 8).toUpperCase()}`;
   }
   submit() {
+    if (!this.canSubmit()) return;
     this.error.set('');
     this.result.set(null);
     this.busy.set(true);
@@ -66,6 +86,7 @@ export class TradeComponent {
         next: (o) => {
           this.result.set(o);
           this.busy.set(false);
+          this.refreshBalances();
         },
         error: (e) => {
           this.error.set(e.error?.message ?? 'Unable to submit order');
