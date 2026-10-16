@@ -30,6 +30,11 @@ export class AccountsComponent {
   editingId: string | null = null;
   editName = '';
   closingId: string | null = null;
+  transferFromId = '';
+  transferToId = '';
+  transferAmount: number | null = null;
+  readonly transferPreview = signal<{ rate: number; source: string; fromCurrency: string; toCurrency: string; amount: number; transferId: string } | null>(null);
+  readonly reviewingTransfer = signal(false);
 
   constructor() { this.reload(); }
 
@@ -52,8 +57,86 @@ export class AccountsComponent {
     this.loading.set(true);
     this.error.set('');
     this.api.accounts().pipe(finalize(() => this.loading.set(false))).subscribe({
-      next: accounts => { this.accounts.set(accounts); this.loadBalances(); },
+      next: accounts => {
+        this.accounts.set(accounts);
+        const active = accounts.filter(a => a.status === 'ACTIVE');
+        if (!active.some(a => a.accountId === this.transferFromId)) this.transferFromId = active[0]?.accountId ?? '';
+        if (!active.some(a => a.accountId === this.transferToId) || this.transferToId === this.transferFromId)
+          this.transferToId = active.find(a => a.accountId !== this.transferFromId)?.accountId ?? '';
+        this.transferPreview.set(null);
+        this.loadBalances();
+      },
       error: () => this.error.set('Unable to load accounts.'),
+    });
+  }
+
+  activeAccounts(): Account[] { return this.accounts().filter(a => a.status === 'ACTIVE'); }
+  transferFrom(): Account | undefined { return this.accounts().find(a => a.accountId === this.transferFromId); }
+  transferTo(): Account | undefined { return this.accounts().find(a => a.accountId === this.transferToId); }
+  resetTransferReview(): void { this.transferPreview.set(null); }
+
+  reviewTransfer(): void {
+    const from = this.transferFrom(), to = this.transferTo();
+    if (this.busy() || this.reviewingTransfer() || !from || !to || from.accountId === to.accountId ||
+        !this.validAmount(this.transferAmount)) {
+      this.error.set('Choose two different active accounts and a positive amount with at most two decimal places.');
+      return;
+    }
+    const available = this.balance(from);
+    if (available === undefined) {
+      this.error.set('Cash balances are still loading. Please try again.');
+      return;
+    }
+    if (available < this.transferAmount!) {
+      this.error.set('Insufficient available cash in ' + from.baseCurrency + '.');
+      return;
+    }
+    this.error.set('');
+    this.message.set('');
+    this.reviewingTransfer.set(true);
+    const amount = this.transferAmount!;
+    this.api.fxRate(from.baseCurrency, to.baseCurrency)
+      .pipe(finalize(() => this.reviewingTransfer.set(false))).subscribe({
+        next: fx => {
+          if (fx.rate <= 0 || !Number.isFinite(fx.rate)) {
+            this.error.set('No valid exchange rate is available.');
+            return;
+          }
+          this.transferPreview.set({
+            rate: fx.rate, source: fx.source,
+            fromCurrency: from.baseCurrency, toCurrency: to.baseCurrency,
+            amount, transferId: crypto.randomUUID(),
+          });
+        },
+        error: e => this.error.set(e.error?.message ?? 'Unable to retrieve an FX rate for these accounts.'),
+      });
+  }
+
+  confirmTransfer(): void {
+    const preview = this.transferPreview();
+    const from = this.transferFrom(), to = this.transferTo();
+    if (this.busy() || !preview || !from || !to || from.accountId === to.accountId ||
+        preview.amount !== this.transferAmount || preview.fromCurrency !== from.baseCurrency ||
+        preview.toCurrency !== to.baseCurrency) return;
+    this.busy.set(true);
+    this.error.set('');
+    this.api.transferCash({
+      transferId: preview.transferId, fromAccountId: from.accountId,
+      toAccountId: to.accountId, amount: preview.amount,
+    }).pipe(finalize(() => this.busy.set(false))).subscribe({
+      next: result => {
+        this.transferPreview.set(null);
+        this.transferAmount = null;
+        this.message.set('Transferred ' + result.debitedAmount.toFixed(2) + ' ' + result.fromCurrency +
+          ' from ' + from.accountName + ' to ' + to.accountName +
+          ' (' + result.creditedAmount.toFixed(2) + ' ' + result.toCurrency + ').');
+        this.loadBalances();
+      },
+      error: e => {
+        this.error.set(e.error?.message ??
+          'Transfer could not be confirmed. Check balances before retrying; the same transfer ID will be reused.');
+        this.loadBalances();
+      },
     });
   }
 
