@@ -98,6 +98,7 @@ export class AccountsComponent {
     this.api.fxRate(from.baseCurrency, to.baseCurrency)
       .pipe(finalize(() => this.reviewingTransfer.set(false))).subscribe({
         next: fx => {
+          if (this.transferFromId !== from.accountId || this.transferToId !== to.accountId || this.transferAmount !== amount) return;
           if (fx.rate <= 0 || !Number.isFinite(fx.rate)) {
             this.error.set('No valid exchange rate is available.');
             return;
