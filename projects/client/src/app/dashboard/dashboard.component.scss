@@ -1,1 +1,8 @@
 /* Component-specific styles. Shared styles remain in the application stylesheet. */
+
+.reporting-controls { display:flex; align-items:center; flex-wrap:wrap; gap:14px; margin:16px 0; }
+.reporting-controls label { display:flex; align-items:center; gap:10px; font-weight:600; }
+.reporting-controls select, .reporting-controls button { padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px; }
+.fx-details { margin:12px 0 22px; padding:14px 18px; border:1px solid #dde3ea; border-radius:8px; }
+.fx-details p { margin:6px 0; font-size:13px; }
+.fx-error { color:#991b1b; }
