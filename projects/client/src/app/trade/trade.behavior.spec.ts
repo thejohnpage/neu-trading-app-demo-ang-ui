@@ -38,7 +38,7 @@ describe('TradeComponent behavior', () => {
     expect(component.canSell()).toBe(false);
   });
   it('disables both actions for an unfunded account', () => {
-    component.cash.set([{ accountId: 'account-1', currency: 'USD', balance: 0 }]);
+    component.cash.set([{ accountId: 'account-1', currency: 'USD', balance: 0, updatedAt: '2026-10-16T00:00:00Z' }]);
     expect(component.canBuy()).toBe(false);
     expect(component.canSell()).toBe(false);
     expect(component.canSubmit()).toBe(false);
