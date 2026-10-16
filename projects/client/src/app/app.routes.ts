@@ -3,6 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MarketsComponent } from './markets/markets.component';
 import { TradeComponent } from './trade/trade.component';
+import { AccountsComponent } from './accounts/accounts.component';
 import { OrdersComponent } from './orders/orders.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from '@shared/login/login.component';
@@ -11,6 +12,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent, data: { type: 'CLIENT' } },
   { path: 'register', component: RegisterComponent },
   { path: '', component: HomeComponent, canActivate: [authGuard] },
+  { path: 'accounts', component: AccountsComponent, canActivate: [authGuard] },
   { path: 'portfolio', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'markets', component: MarketsComponent, canActivate: [authGuard] },
   { path: 'trade', component: TradeComponent, canActivate: [authGuard] },
