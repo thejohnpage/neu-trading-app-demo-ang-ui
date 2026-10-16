@@ -49,6 +49,17 @@ describe('TradeComponent behavior', () => {
     component.symbol = 'AAPL';
     expect(component.canSell()).toBe(false);
   });
+  it('permits selling an owned holding even with no cash', () => {
+    component.positions.set([{ accountId: 'account-1', symbol: 'MSFT', quantity: 5 } as any]);
+    component.cash.set([{ accountId: 'account-1', currency: 'USD', balance: 0, updatedAt: '2026-10-16T00:00:00Z' }]);
+    expect(component.canSell()).toBe(true);
+    expect(component.canBuy()).toBe(false);
+    expect(component.needsFunding()).toBe(false);
+  });
+  it('shows a funding requirement when both holdings and cash are empty', () => {
+    component.cash.set([{ accountId: 'account-1', currency: 'USD', balance: 0, updatedAt: '2026-10-16T00:00:00Z' }]);
+    expect(component.needsFunding()).toBe(true);
+  });
   it('formats order identifiers', () => {
     expect(component.shortId('abcd1234-5678-9012')).toBe('ORD-ABCD1234');
   });
