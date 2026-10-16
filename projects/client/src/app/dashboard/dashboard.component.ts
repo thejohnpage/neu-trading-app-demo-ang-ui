@@ -97,6 +97,14 @@ export class DashboardComponent {
       },
     });
   }
+  reportedMarketValue(accountId: string, instrumentId: string): string {
+    return this.valuation()?.positions.find(p => p.accountId === accountId && p.instrumentId === instrumentId)
+      ?.reportedMarketValue ?? '—';
+  }
+  reportedCash(accountId: string, currency: string): string {
+    return this.valuation()?.cash.find(c => c.accountId === accountId && c.currency === currency)
+      ?.reportedBalance ?? '—';
+  }
   currency = 'USD';
   amount = 1000;
   fromCurrency = 'USD';
