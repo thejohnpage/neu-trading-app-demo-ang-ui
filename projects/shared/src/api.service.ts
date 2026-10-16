@@ -48,6 +48,9 @@ export class ApiService {
   accounts() {
     return this.http.get<Account[]>(`${this.base}/me/accounts`);
   }
+  createAccount() {
+    return this.http.post<Account>(`${this.base}/me/accounts`, {});
+  }
   cash() {
     return this.http.get<CashBalance[]>(`${this.base}/me/cash`);
   }
