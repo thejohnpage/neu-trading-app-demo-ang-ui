@@ -22,6 +22,8 @@ export interface Account {
   accountNumber: string;
   baseCurrency: string;
   status: string;
+  accountName: string;
+  accountType: string;
 }
 export interface CashBalance {
   accountId: string;
