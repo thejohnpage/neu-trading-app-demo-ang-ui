@@ -2,13 +2,13 @@
 <div class="trade-grid">
   <section class="panel">
     <label>Account</label
-    ><select [(ngModel)]="accountId">
+    ><select [ngModel]="accountId" (ngModelChange)="onAccountChange($event)">
       @for (a of accounts(); track a.accountId) {
         <option [value]="a.accountId">{{ a.accountNumber }}</option>
       }
     </select>
     <label>Instrument</label
-    ><select [(ngModel)]="symbol" (ngModelChange)="loadQuote()">
+    ><select [ngModel]="symbol" (ngModelChange)="onSymbolChange($event)">
       @for (i of instruments(); track i.instrumentId) {
         <option [value]="i.symbol">{{ i.symbol }} — {{ i.name }}</option>
       }
@@ -23,8 +23,8 @@
         </div>
       </div>
       <p>
-        <small>Trade currency</small> <strong>{{ q.quoteCurrency }}</strong> ·
-        <small>Available cash</small>
+        <small>Trade currency</small>&nbsp; <strong>{{ q.quoteCurrency }}</strong> ·
+        <small>Available cash</small>&nbsp;
         <strong
           >{{ availableCash(q.quoteCurrency) | number: '1.2-8' }} {{ q.quoteCurrency }}</strong
         >
@@ -32,14 +32,14 @@
     }
     <label>Side</label>
     <div class="side">
-      <button [class.active]="side === 'BUY'" (click)="side = 'BUY'">BUY</button
-      ><button [class.active]="side === 'SELL'" (click)="side = 'SELL'">SELL</button>
+      <button type="button" [disabled]="!canBuy() || busy()" [class.active]="side === 'BUY'" (click)="side = 'BUY'">BUY</button
+      ><button type="button" [disabled]="!canSell() || busy()" [class.active]="side === 'SELL'" (click)="side = 'SELL'">SELL</button>
     </div>
     <label>Quantity</label
     ><input type="number" min="0.00000001" step="any" [(ngModel)]="quantity" /><button
       class="primary"
       (click)="submit()"
-      [disabled]="busy()"
+      [disabled]="!canSubmit()"
     >
       {{ busy() ? 'Submitting…' : 'Submit order' }}
     </button>
