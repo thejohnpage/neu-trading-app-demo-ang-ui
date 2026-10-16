@@ -25,7 +25,10 @@
         </select>
       </label>
     </div>
-    <p class="account-help">The base currency is fixed after creation. The account opens active with a zero cash balance.</p>
+    <label class="initial-deposit">Initial deposit ({{ baseCurrency }}, optional)
+      <input type="number" name="initialDeposit" [(ngModel)]="initialDeposit" min="0" step="0.01" required />
+    </label>
+    <p class="account-help">The base currency is fixed after creation. Leave the initial deposit at zero to fund the account later. Deposits are simulated cash-wallet credits.</p>
     <button type="submit" [disabled]="busy() || loading() || !accountName.trim()">Open account</button>
   </form>
 
@@ -42,8 +45,17 @@
           <p>Type: {{ account.accountType || 'INDIVIDUAL' }}</p>
           <p>Base currency: {{ account.baseCurrency }}</p>
           <p>Status: <strong>{{ account.status }}</strong></p>
+          <p>Available {{ account.baseCurrency }} cash: <strong>{{ balance(account) === undefined ? 'Loading…' : (balance(account) | number: '1.2-2') }}</strong></p>
           @if (account.status === 'ACTIVE') {
-            @if (editingId === account.accountId) {
+            @if (depositAccountId === account.accountId) {
+              <form class="account-deposit" (ngSubmit)="addFunds(account)">
+                <label>Deposit amount ({{ account.baseCurrency }})
+                  <input type="number" name="depositAmount" [(ngModel)]="depositAmount" min="0.01" step="0.01" required />
+                </label>
+                <button type="submit" [disabled]="busy() || depositAmount === null || depositAmount <= 0">Confirm deposit</button>
+                <button type="button" (click)="depositAccountId = null" [disabled]="busy()">Cancel</button>
+              </form>
+            } @else if (editingId === account.accountId) {
               <form (ngSubmit)="saveEdit(account)" class="account-edit">
                 <label>Account name
                   <input name="editName" [(ngModel)]="editName" required maxlength="100" />
@@ -59,6 +71,7 @@
               </div>
             } @else {
               <div class="account-actions">
+                <button type="button" (click)="startDeposit(account)" [disabled]="busy()">Deposit Funds</button>
                 <button type="button" (click)="startEdit(account)" [disabled]="busy()">Rename</button>
                 <button type="button" (click)="confirmClose(account)" [disabled]="busy()">Close account</button>
               </div>
