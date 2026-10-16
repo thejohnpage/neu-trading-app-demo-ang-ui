@@ -11,6 +11,35 @@
     }
   </select>
 </section>
+<section class="reporting-controls">
+  <label>Reporting currency
+    <select aria-label="Portfolio reporting currency" [ngModel]="reportingCurrency()" (ngModelChange)="setReportingCurrency($event)">
+      @for (currency of reportingCurrencies; track currency) {
+        <option [value]="currency">{{ currency }}</option>
+      }
+    </select>
+  </label>
+  <button type="button" (click)="refreshFx()" [disabled]="fxLoading()">Refresh FX rates</button>
+  @if (fxLoading()) { <span role="status">Loading FX valuations…</span> }
+  @if (fxError()) { <p class="fx-error" role="alert">{{ fxError() }}</p> }
+</section>
+@if (fxReady()) {
+  <section class="portfolio-summary">
+    <article><small>Total equity ({{ reportingCurrency() }})</small><strong>{{ totalEquity() | number: '1.2-2' }}</strong></article>
+    <article><small>Total cash ({{ reportingCurrency() }})</small><strong>{{ totalCash() | number: '1.2-2' }}</strong></article>
+    <article><small>Market value ({{ reportingCurrency() }})</small><strong>{{ totalMarketValue() | number: '1.2-2' }}</strong></article>
+    <article><small>Cost basis ({{ reportingCurrency() }})</small><strong>{{ totalCostBasis() | number: '1.2-2' }}</strong></article>
+    <article><small>Unrealized P/L ({{ reportingCurrency() }})</small><strong>{{ totalProfitLoss() | number: '1.2-2' }}</strong></article>
+  </section>
+  @if (fxDetails().length) {
+    <div class="fx-details">
+      <strong>FX valuation rates</strong>
+      @for (fx of fxDetails(); track fx.currency) {
+        <p>1 {{ fx.currency }} = {{ fx.rate | number: '1.4-8' }} {{ reportingCurrency() }} · {{ fx.source }} · {{ fx.quotedAt | date: 'medium' }}</p>
+      }
+    </div>
+  }
+}
 @if (liveStatus(); as s) {
   <section class="live-order-status">
     <div>
@@ -35,29 +64,29 @@
   </article>
 </section>
 
-@if (selectedAccountId() !== "ALL" || (visiblePositions().every(p => p.currency === visiblePositions()[0]?.currency))) {
+@if (fxReady()) {
 <section class="dashboard-charts">
   <app-simple-chart
     title="Portfolio allocation"
-    subtitle="Market value by ticker"
+    subtitle="Market value in reporting currency"
     type="donut"
     [data]="visibleAllocation()"
   /><app-simple-chart
     title="Unrealized gain / loss"
-    subtitle="Current P/L by ticker"
+    subtitle="Unrealized P/L in reporting currency"
     [data]="visibleProfitLoss()"
-    prefix="$"
+    [prefix]="reportingCurrency() + ' '"
   />
 </section>
 } @else {
-  <p class="muted">Charts combining multiple currencies require FX conversion into a reporting currency.</p>
+  <p class="muted">Charts are unavailable until all required FX rates are loaded.</p>
 }
 
 <section class="portfolio-section">
   <div class="section-title">
     <div>
       <h2>Positions</h2>
-      <p class="muted">Securities currently held in this account.</p>
+      <p class="muted">Securities in the selected account(s); native values are preserved and reported values use FX rates.</p>
     </div>
   </div>
   <table class="portfolio-table">
@@ -70,6 +99,7 @@
         <th class="numeric">Market value</th>
         <th class="numeric">Cost basis</th>
         <th class="numeric">Gain / loss</th>
+        <th class="numeric">Reported value ({{ reportingCurrency() }})</th>
       </tr>
     </thead>
     <tbody>
@@ -92,10 +122,15 @@
             {{ p.unrealizedGainLoss | number: '1.2-2'
             }}<small class="cell-sub">{{ p.unrealizedGainLossPercent | number: '1.2-2' }}%</small>
           </td>
+          <td class="numeric">
+            @if (fxReady()) {
+              {{ p.marketValue * (fxRates()[p.currency]?.rate ?? 1) | number: '1.2-2' }}
+            } @else { — }
+          </td>
         </tr>
       } @empty {
         <tr>
-          <td colspan="7" class="empty">No positions currently held.</td>
+          <td colspan="8" class="empty">No positions currently held.</td>
         </tr>
       }
     </tbody>
@@ -114,6 +149,7 @@
       <tr>
         <th>Currency</th>
         <th class="numeric">Available cash</th>
+        <th class="numeric">Reported ({{ reportingCurrency() }})</th>
         <th>Last updated</th>
       </tr>
     </thead>
@@ -124,6 +160,7 @@
             <strong>{{ c.currency }}</strong>
           </td>
           <td class="numeric">{{ c.balance | number: '1.2-2' }}</td>
+          <td class="numeric">@if (fxReady()) { {{ c.balance * (fxRates()[c.currency]?.rate ?? 1) | number: '1.2-2' }} } @else { — }</td>
           <td>{{ c.updatedAt | date: 'medium' }}</td>
         </tr>
       }
