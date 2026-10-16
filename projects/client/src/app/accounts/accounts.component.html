@@ -32,6 +32,48 @@
     <button type="submit" [disabled]="busy() || loading() || !accountName.trim()">Open account</button>
   </form>
 
+
+  <section class="account-create transfer-panel">
+    <h2>Transfer between accounts</h2>
+    <p class="account-help">Move cash between your active accounts. Different base currencies are converted using the current market FX rate.</p>
+    <div class="account-fields">
+      <label>From account
+        <select name="transferFrom" [ngModel]="transferFromId" (ngModelChange)="transferFromId = $event; resetTransferReview()" [disabled]="busy()">
+          @for (account of activeAccounts(); track account.accountId) {
+            <option [value]="account.accountId">{{ account.accountName || account.accountNumber }} ({{ account.baseCurrency }})</option>
+          }
+        </select>
+      </label>
+      <label>To account
+        <select name="transferTo" [ngModel]="transferToId" (ngModelChange)="transferToId = $event; resetTransferReview()" [disabled]="busy()">
+          @for (account of activeAccounts(); track account.accountId) {
+            <option [value]="account.accountId">{{ account.accountName || account.accountNumber }} ({{ account.baseCurrency }})</option>
+          }
+        </select>
+      </label>
+      <label>Amount ({{ transferFrom()?.baseCurrency || 'source currency' }})
+        <input type="number" name="transferAmount" min="0.01" step="0.01" [ngModel]="transferAmount" (ngModelChange)="transferAmount = $event; resetTransferReview()" [disabled]="busy()" />
+      </label>
+    </div>
+    @if (transferFrom(); as source) {
+      <p class="account-help">Available source balance: {{ balance(source) === undefined ? 'Loading…' : (balance(source) | number: '1.2-2') }} {{ source.baseCurrency }}</p>
+    }
+    @if (transferPreview(); as preview) {
+      <div class="transfer-review">
+        <p>Review: debit <strong>{{ preview.amount | number: '1.2-2' }} {{ preview.fromCurrency }}</strong></p>
+        <p>Estimated credit: <strong>{{ preview.amount * preview.rate | number: '1.2-2' }} {{ preview.toCurrency }}</strong></p>
+        <p>Indicative FX rate: 1 {{ preview.fromCurrency }} = {{ preview.rate | number: '1.4-8' }} {{ preview.toCurrency }} ({{ preview.source }})</p>
+        <p class="account-help">The final FX rate is obtained when you confirm. The credited amount may differ from this estimate.</p>
+        <button type="button" (click)="confirmTransfer()" [disabled]="busy()">Confirm transfer</button>
+        <button type="button" (click)="resetTransferReview()" [disabled]="busy()">Cancel</button>
+      </div>
+    } @else {
+      <button type="button" (click)="reviewTransfer()" [disabled]="busy() || reviewingTransfer() || activeAccounts().length < 2">
+        {{ reviewingTransfer() ? 'Getting FX rate…' : 'Review transfer' }}
+      </button>
+    }
+  </section>
+
   @if (error()) { <p class="accounts-error" role="alert">{{ error() }}</p> }
   @if (message()) { <p class="accounts-success" role="status">{{ message() }}</p> }
   @if (loading()) {
