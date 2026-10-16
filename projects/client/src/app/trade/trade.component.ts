@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
@@ -19,11 +19,11 @@ export class TradeComponent {
   instruments = signal<Instrument[]>([]);
   cash = signal<CashBalance[]>([]);
   positions = signal<Position[]>([]);
-  readonly funded = computed(() => this.cash().some(c => c.accountId === this.accountId && c.balance > 0));
-  readonly heldQuantity = computed(() => this.positions().filter(p => p.accountId === this.accountId && p.symbol === this.symbol).reduce((sum, p) => sum + p.quantity, 0));
-  readonly canBuy = computed(() => !!this.accountId && !!this.quote() && this.funded() && this.availableCash(this.quote()!.quoteCurrency) > 0);
-  readonly canSell = computed(() => !!this.accountId && this.funded() && this.heldQuantity() > 0);
-  readonly canSubmit = computed(() => !this.busy() && this.quantity > 0 && (this.side === 'BUY' ? this.canBuy() : this.canSell()) && (this.side !== 'SELL' || this.quantity <= this.heldQuantity()));
+  funded(): boolean { return this.cash().some(c => c.accountId === this.accountId && c.balance > 0); }
+  heldQuantity(): number { return this.positions().filter(p => p.accountId === this.accountId && p.symbol === this.symbol).reduce((sum, p) => sum + p.quantity, 0); }
+  canBuy(): boolean { const q = this.quote(); return !!this.accountId && !!q && this.funded() && this.availableCash(q.quoteCurrency) > 0; }
+  canSell(): boolean { return !!this.accountId && this.funded() && this.heldQuantity() > 0; }
+  canSubmit(): boolean { return !this.busy() && this.quantity > 0 && (this.side === 'BUY' ? this.canBuy() : this.canSell()) && (this.side !== 'SELL' || this.quantity <= this.heldQuantity()); }
   quote = signal<Quote | null>(null);
   result = signal<Order | null>(null);
   error = signal('');
