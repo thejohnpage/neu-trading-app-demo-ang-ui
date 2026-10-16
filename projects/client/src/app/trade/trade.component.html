@@ -7,6 +7,9 @@
         <option [value]="a.accountId">{{ a.accountNumber }}</option>
       }
     </select>
+    @if (needsFunding()) {
+      <p class="funding-notice" role="status">This account has no available cash or holdings. Fund the account before placing trades. <a routerLink="/portfolio">Go to Portfolio to deposit funds</a>.</p>
+    }
     <label>Instrument</label
     ><select [ngModel]="symbol" (ngModelChange)="onSymbolChange($event)">
       @for (i of instruments(); track i.instrumentId) {
