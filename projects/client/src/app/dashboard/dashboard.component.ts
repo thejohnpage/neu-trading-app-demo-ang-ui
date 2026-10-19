@@ -77,6 +77,7 @@ export class DashboardComponent {
     if (!baseCurrency) return;
     this.currency = baseCurrency;
     this.fromCurrency = baseCurrency;
+    this.reportingCurrency.set(baseCurrency);
     this.rate.set(null);
     this.rateSource.set('');
   }
