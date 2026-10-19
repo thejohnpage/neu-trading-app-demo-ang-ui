@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { ThemeToggleComponent } from '@shared/theme-toggle/theme-toggle.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ApiService } from '@shared/api.service';
 import { SessionTimeoutComponent } from '@shared/session-timeout/session-timeout.component';
@@ -14,6 +15,7 @@ import packageInfo from '../../../../../package.json';
     RouterLinkActive,
     SessionTimeoutComponent,
     SessionHeaderComponent,
+    ThemeToggleComponent,
   ],
   styleUrl: './app.component.scss',
   templateUrl: './app.component.html',
