@@ -21,6 +21,7 @@ describe('Portfolio FX valuation', () => {
         unrealizedGainLossPercent: 66.67, instrumentType: 'EQUITY', updatedAt: '2026-10-16T00:00:00Z' },
     ])),
     orders: vi.fn(() => of([])),
+    cashTransactions: vi.fn(() => of([])),
     portfolioValuation: vi.fn((currency: string, accountId?: string) => of({
       reportingCurrency: currency,
       totalCash: accountId === 'a' ? '100' : accountId === 'b' ? '62.5' : currency === 'GBP' ? '130' : '162.5',
@@ -56,7 +57,7 @@ describe('Portfolio FX valuation', () => {
     expect(component.totalProfitLoss()).toBe('10');
     expect(component.totalEquity()).toBe('187.5');
     expect(component.cash()[1].balance).toBe(50);
-    expect(component.positions()[0].marketValue).toBe('20');
+    expect(component.positions()[0].marketValue).toBe(20);
   });
 
   it('recalculates totals when an individual account is selected', () => {
@@ -71,7 +72,7 @@ describe('Portfolio FX valuation', () => {
   it('supports GBP reporting currency', () => {
     component.setReportingCurrency('GBP');
     expect(component.totalCash()).toBe('130');
-    expect(component.totalMarketValue()).toBe(20);
+    expect(component.totalMarketValue()).toBe('20');
   });
 
   it('hides mixed-currency totals when FX rates are unavailable', () => {
