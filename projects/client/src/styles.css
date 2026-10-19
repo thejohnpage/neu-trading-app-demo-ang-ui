@@ -909,3 +909,85 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* NEU Trading semantic theme layer. Keep after legacy declarations. */
+:root, :root[data-theme="light"] {
+  color-scheme: light;
+  --page-bg:#f3f6fb; --surface:#ffffff; --surface-alt:#f7f9fc;
+  --surface-hover:#edf3fb; --text-primary:#16243a; --text-secondary:#52637a;
+  --line:#dce4ee; --control-border:#b8c7d9; --control-bg:#ffffff;
+  --accent:#205caa; --accent-hover:#174782; --accent-contrast:#ffffff;
+  --focus-ring:#75aaf4; --success:#16734a; --danger:#b42318;
+  --success-bg:#eaf7ef; --danger-bg:#fff0ef; --nav:#13243a;
+  --shadow:0 5px 22px rgba(20,36,58,.055);
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page-bg:#0d1522; --surface:#162337; --surface-alt:#1c2c42;
+  --surface-hover:#263b56; --text-primary:#ecf2fb; --text-secondary:#b2c2d7;
+  --line:#344761; --control-border:#607692; --control-bg:#1a2a40;
+  --accent:#8cbcff; --accent-hover:#b4d5ff; --accent-contrast:#10233c;
+  --focus-ring:#9ac6ff; --success:#66dca5; --danger:#ff9997;
+  --success-bg:#173c32; --danger-bg:#492b32; --nav:#0b1421;
+  --shadow:0 7px 24px rgba(0,0,0,.23);
+}
+html, body { background:var(--page-bg); color:var(--text-primary); }
+body { font-family:Inter, "Segoe UI", system-ui, sans-serif; line-height:1.5; }
+.muted, .eyebrow, .cell-sub, .card-heading p, .panel label, th,
+.login-context, .account-help, .account-number, .portfolio-summary small,
+.summary-strip small, .cards small { color:var(--text-secondary) !important; }
+a:not(.brand):not(.action-link):not(.primary-nav a):not(.sidebar a) { color:var(--accent); }
+:where(input,select,textarea,button) { font:inherit; }
+:where(input,select,textarea) {
+  background:var(--control-bg) !important; color:var(--text-primary) !important;
+  border:1px solid var(--control-border) !important; border-radius:7px;
+}
+:where(input,select,textarea,button,a,summary):focus-visible {
+  outline:3px solid var(--focus-ring) !important; outline-offset:2px;
+}
+button:not(.primary):not(.active), .theme-toggle {
+  background:var(--control-bg); color:var(--text-primary);
+  border-color:var(--control-border);
+}
+button:not(:disabled):hover { filter:brightness(1.06); }
+button.primary,button.active,.action-link {
+  background:var(--accent) !important; color:var(--accent-contrast) !important;
+  border-color:var(--accent) !important;
+}
+button:disabled { opacity:.5; cursor:not-allowed; }
+:where(.panel,.portfolio-section,.cards article,.metric-grid article,.data-card,
+.login-card,.session-modal,.account-card,.account-create,.account-confirm,
+.transfer-review,.fx-details,.quote div,.live-order-status,.section-title,
+.summary-strip,.portfolio-summary article,.quick-actions,.role-card) {
+  background:var(--surface) !important; color:var(--text-primary);
+  border-color:var(--line) !important;
+}
+:where(.portfolio-summary,.summary-strip) { background:var(--line) !important; }
+:where(table,.portfolio-table) { background:var(--surface) !important; color:var(--text-primary); }
+:where(th,.portfolio-table th) { background:var(--surface-alt) !important; color:var(--text-secondary) !important; }
+:where(td,th,.section-title,.card-heading,.portfolio-section,.money-tools,footer) { border-color:var(--line) !important; }
+:where(tbody tr:hover,tbody tr.selected,.portfolio-table tbody tr:hover) { background:var(--surface-hover) !important; }
+:where(.quote div,.money-tools summary,.status-pill,.transfer-review,.panel pre) {
+  background:var(--surface-alt) !important; color:var(--text-primary);
+}
+:where(.positive,.success-message,.success) { color:var(--success) !important; }
+:where(.negative,.login-error,.accounts-error,.fx-error,.error) { color:var(--danger) !important; }
+.login-error,.accounts-error { background:var(--danger-bg) !important; }
+.accounts-success,.success-message { background:var(--success-bg) !important; }
+footer { background:var(--surface) !important; color:var(--text-secondary); }
+:where(.session-header button,.theme-toggle) { color:inherit; }
+:root[data-theme="dark"] .topbar { background:linear-gradient(115deg,#080f1a,#132840) !important; }
+:root[data-theme="dark"] .primary-nav { background:var(--surface) !important; border-color:var(--line); }
+:root[data-theme="dark"] .primary-nav a { color:var(--text-secondary); }
+:root[data-theme="dark"] .primary-nav a.active { color:var(--accent); }
+:root[data-theme="dark"] .primary-nav a:hover { background:var(--surface-hover); }
+:root[data-theme="dark"] .sidebar { background:var(--nav); }
+:root[data-theme="dark"] .sidebar nav a.active { background:#28476a; }
+:root[data-theme="dark"] .admin-topbar { background:var(--surface); color:var(--text-primary); }
+:root[data-theme="dark"] .admin-topbar .session-header { color:var(--text-primary); }
+:root[data-theme="dark"] .login-brand { color:var(--text-primary); }
+:root[data-theme="dark"] .status-pill { color:var(--text-primary) !important; }
+@media (prefers-reduced-motion:reduce) {
+  *,*::before,*::after { transition-duration:.01ms !important; animation-duration:.01ms !important; }
+}
