@@ -66,7 +66,7 @@ describe('Portfolio FX valuation', () => {
     expect(component.totalMarketValue()).toBe('0');
     component.selectAccount('b');
     expect(component.totalCash()).toBe('62.5');
-    expect(component.totalMarketValue()).toBe(25);
+    expect(component.totalMarketValue()).toBe('25');
   });
 
   it('supports GBP reporting currency', () => {
