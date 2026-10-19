@@ -73,9 +73,11 @@ describe('Portfolio FX valuation', () => {
     component.selectAccount('b');
     expect(component.currency).toBe('GBP');
     expect(component.fromCurrency).toBe('GBP');
+    expect(component.reportingCurrency()).toBe('GBP');
     component.selectAccount('a');
     expect(component.currency).toBe('USD');
     expect(component.fromCurrency).toBe('USD');
+    expect(component.reportingCurrency()).toBe('USD');
   });
 
   it('supports GBP reporting currency', () => {
