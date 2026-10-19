@@ -1,7 +1,7 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 
-export type ThemeMode = 'light' | 'dark';
+export type ThemeMode = 'light' | 'dark' | 'projector';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
@@ -14,7 +14,7 @@ export class ThemeService {
     if (!this.browser) return;
     let stored: string | null = null;
     try { stored = localStorage.getItem(this.storageKey); } catch { /* storage disabled */ }
-    const preferred: ThemeMode = stored === 'light' || stored === 'dark'
+    const preferred: ThemeMode = stored === 'light' || stored === 'dark' || stored === 'projector'
       ? stored
       : window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     this.apply(preferred);
