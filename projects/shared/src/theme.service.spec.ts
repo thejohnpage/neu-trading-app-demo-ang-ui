@@ -21,6 +21,17 @@ describe('ThemeService', () => {
     expect(localStorage.getItem('neu-trading-theme')).toBe('light');
   });
 
+  it('persists projector mode across service initialization', () => {
+    const service = TestBed.inject(ThemeService);
+    service.set('projector');
+    expect(service.mode()).toBe('projector');
+    expect(localStorage.getItem('neu-trading-theme')).toBe('projector');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('projector');
+    TestBed.resetTestingModule();
+    const restored = TestBed.inject(ThemeService);
+    expect(restored.mode()).toBe('projector');
+  });
+
   it('restores a saved theme in a new injector', () => {
     localStorage.setItem('neu-trading-theme', 'dark');
     const service = TestBed.inject(ThemeService);
