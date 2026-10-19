@@ -68,8 +68,17 @@ export class DashboardComponent {
   set accountId(id: string) { this.selectedAccountId.set(id); }
   selectAccount(id: string): void {
     this.selectedAccountId.set(id);
+    this.syncAccountCurrency();
     this.loadTransactions();
     this.refreshFx();
+  }
+  private syncAccountCurrency(): void {
+    const baseCurrency = this.selectedAccount()?.baseCurrency;
+    if (!baseCurrency) return;
+    this.currency = baseCurrency;
+    this.fromCurrency = baseCurrency;
+    this.rate.set(null);
+    this.rateSource.set('');
   }
   setReportingCurrency(currency: string): void {
     if (!this.reportingCurrencies.includes(currency)) return;
@@ -124,6 +133,7 @@ export class DashboardComponent {
     this.api.accounts().subscribe((x) => {
       this.accounts.set(x);
       this.accountId = 'ALL';
+      this.syncAccountCurrency();
       this.loadTransactions();
       this.refreshFx();
     });
