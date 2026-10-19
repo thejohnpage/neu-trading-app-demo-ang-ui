@@ -991,3 +991,71 @@ footer { background:var(--surface) !important; color:var(--text-secondary); }
 @media (prefers-reduced-motion:reduce) {
   *,*::before,*::after { transition-duration:.01ms !important; animation-duration:.01ms !important; }
 }
+
+
+/* High-contrast classroom projector mode: designed for washed-out projection. */
+:root[data-theme="projector"] {
+  color-scheme: light;
+  --page-bg:#ffffff; --surface:#ffffff; --surface-alt:#eef2f8;
+  --surface-hover:#dce8f8; --text-primary:#080e19; --text-secondary:#263b55;
+  --line:#667b96; --control-border:#344f70; --control-bg:#ffffff;
+  --accent:#003d99; --accent-hover:#002c70; --accent-contrast:#ffffff;
+  --focus-ring:#e58b00; --success:#00562e; --danger:#a00016;
+  --success-bg:#e0f5e8; --danger-bg:#ffe7e9; --nav:#081c38;
+  --ink:#080e19; --muted:#263b55; --subtle:#eef2f8;
+  --shadow:0 0 0 1px rgba(10,30,60,.10);
+}
+:root[data-theme="projector"] body { font-size:16px; line-height:1.55; }
+:root[data-theme="projector"] :where(.page-heading h1,.login-card h1) { font-weight:800; }
+:root[data-theme="projector"] :where(.panel,.portfolio-section,.data-card,.cards article,.metric-grid article,
+  .account-card,.account-create,.login-card,.session-modal,.fx-details,.transfer-review) {
+  border:2px solid var(--line) !important; box-shadow:none !important;
+}
+:root[data-theme="projector"] :where(th,.portfolio-table th) {
+  background:#dfe8f5 !important; color:#07182d !important;
+  font-size:13px; font-weight:800;
+}
+:root[data-theme="projector"] :where(td,th) { border-bottom:1px solid #8294aa !important; }
+:root[data-theme="projector"] tbody tr:nth-child(even) { background:#f0f4fa; }
+:root[data-theme="projector"] tbody tr:hover { background:#dce8f8 !important; }
+:root[data-theme="projector"] :where(input,select,textarea) {
+  border:2px solid #344f70 !important; background:#fff !important;
+  color:#080e19 !important; min-height:42px;
+}
+:root[data-theme="projector"] button { font-weight:750; border-width:2px; }
+:root[data-theme="projector"] :where(.muted,.cell-sub,.account-help,.account-number,.eyebrow) {
+  color:#263b55 !important;
+}
+:root[data-theme="projector"] :where(.positive,.success-message) {
+  color:#00562e !important; font-weight:750;
+}
+:root[data-theme="projector"] :where(.negative,.fx-error,.login-error,.accounts-error) {
+  color:#a00016 !important; font-weight:750;
+}
+:root[data-theme="projector"] :where(.topbar,.sidebar) {
+  background:#081c38 !important; color:#fff !important;
+}
+:root[data-theme="projector"] .primary-nav {
+  background:#fff !important; border-bottom:2px solid #667b96 !important;
+}
+:root[data-theme="projector"] .primary-nav a { color:#163653 !important; font-weight:750; }
+:root[data-theme="projector"] .primary-nav a.active {
+  color:#003d99 !important; border-bottom:4px solid #003d99 !important;
+}
+:root[data-theme="projector"] .sidebar nav a { color:#f3f7ff !important; }
+:root[data-theme="projector"] .sidebar nav a.active {
+  background:#265ca3 !important; color:#fff !important;
+  box-shadow:inset 5px 0 0 #ffce54 !important;
+}
+:root[data-theme="projector"] .sidebar nav p { color:#d6e5ff !important; }
+:root[data-theme="projector"] .admin-topbar {
+  background:#fff !important; color:#080e19 !important;
+  border-bottom:2px solid #667b96 !important;
+}
+:root[data-theme="projector"] .status-pill {
+  background:#dce8f8 !important; color:#07182d !important;
+  border:1px solid #526b8c; font-weight:800;
+}
+:root[data-theme="projector"] :where(.portfolio-summary strong,.metric-grid strong,.cards strong) {
+  font-weight:800; font-variant-numeric:tabular-nums;
+}
