@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { BackendUnavailableComponent } from '@shared/backend-unavailable.component';
 import { ThemeToggleComponent } from '@shared/theme-toggle/theme-toggle.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ApiService } from '@shared/api.service';
@@ -16,6 +17,7 @@ import packageInfo from '../../../../../package.json';
     SessionTimeoutComponent,
     SessionHeaderComponent,
     ThemeToggleComponent,
+    BackendUnavailableComponent,
   ],
   styleUrl: './app.component.scss',
   templateUrl: './app.component.html',
