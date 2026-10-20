@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { backendErrorMessage } from '../backend-error';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -27,9 +28,9 @@ export class LoginComponent {
         this.busy = false;
         this.router.navigateByUrl(this.type === 'ADMIN' ? '/' : '/portfolio');
       },
-      error: () => {
+      error: (error: unknown) => {
         this.busy = false;
-        this.error = 'Invalid email or password';
+        this.error = backendErrorMessage(error);
       },
     });
   }
