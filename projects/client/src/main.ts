@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { AppComponent } from './app/app/app.component';
 import { routes } from './app/app.routes';
 import { authInterceptor } from '@shared/auth.interceptor';
+import { backendErrorInterceptor } from '@shared/backend-error.interceptor';
 bootstrapApplication(AppComponent, {
-  providers: [provideHttpClient(withInterceptors([authInterceptor])), provideRouter(routes)],
+  providers: [provideHttpClient(withInterceptors([authInterceptor, backendErrorInterceptor])), provideRouter(routes)],
 }).catch(console.error);
