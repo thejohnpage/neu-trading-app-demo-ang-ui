@@ -4,6 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { beforeEach, afterEach, describe, expect, it } from 'vitest';
 import { AuthService } from './auth.service';
 import { authInterceptor } from './auth.interceptor';
+import { AppConfigService } from './app-config.service';
 
 describe('authInterceptor', () => {
   let client: HttpClient;
@@ -15,6 +16,7 @@ describe('authInterceptor', () => {
         provideHttpClient(withInterceptors([authInterceptor])),
         provideHttpClientTesting(),
         { provide: AuthService, useValue: auth },
+        { provide: AppConfigService, useValue: { authBaseUrl: 'http://localhost:3001/api/v1/auth' } },
       ],
     });
     client = TestBed.inject(HttpClient);
