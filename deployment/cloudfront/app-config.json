@@ -1,0 +1,4 @@
+{
+  "apiBaseUrl": "/api/v1",
+  "authBaseUrl": "/api/v1/auth"
+}
