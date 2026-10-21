@@ -1,3 +1,4 @@
+
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
@@ -25,13 +26,32 @@
             "styles": [
               "projects/client/src/styles.css"
             ]
-          }
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractLicenses": true,
+              "namedChunks": false
+            },
+            "development": {
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "extractLicenses": false
+            }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
             "development": {
-              "buildTarget": "client:build"
+              "buildTarget": "client:build:development"
+            },
+            "production": {
+              "buildTarget": "client:build:production"
             }
           },
           "defaultConfiguration": "development"
@@ -68,13 +88,32 @@
             "styles": [
               "projects/admin/src/styles.css"
             ]
-          }
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractLicenses": true,
+              "namedChunks": false
+            },
+            "development": {
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "extractLicenses": false
+            }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
             "development": {
-              "buildTarget": "admin:build"
+              "buildTarget": "admin:build:development"
+            },
+            "production": {
+              "buildTarget": "admin:build:production"
             }
           },
           "defaultConfiguration": "development"
