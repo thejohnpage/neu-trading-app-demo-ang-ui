@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import { AppConfigService } from './app-config.service';
 import { HttpClient } from '@angular/common/http';
 import {
   Account,
@@ -26,7 +27,7 @@ export interface ApiVersion {
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly base = 'http://localhost:8081/api/v1';
+  private readonly base = inject(AppConfigService).apiBaseUrl;
   registerClient(body: {
     email: string;
     firstName: string;
