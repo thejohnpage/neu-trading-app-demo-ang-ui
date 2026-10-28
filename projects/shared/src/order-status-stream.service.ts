@@ -20,7 +20,7 @@ export class OrderStatusStreamService {
       const run = async () => {
         try {
           const token = this.auth.accessToken();
-          const response = await fetch('http://localhost:8081/api/v1/orders/status-stream', {
+          const response = await fetch('/api/v1/orders/status-stream', {
             headers: { Authorization: `Bearer ${token}`, Accept: 'text/event-stream' },
             signal: controller.signal,
           });
