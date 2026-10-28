@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { AppConfigService } from './app-config.service';
 export interface OrderStatusUpdate {
   orderId: string;
   accountId: string;
@@ -14,13 +15,14 @@ export interface OrderStatusUpdate {
 @Injectable({ providedIn: 'root' })
 export class OrderStatusStreamService {
   private auth = inject(AuthService);
+  private readonly config = inject(AppConfigService);
   stream() {
     return new Observable<OrderStatusUpdate>((subscriber) => {
       const controller = new AbortController();
       const run = async () => {
         try {
           const token = this.auth.accessToken();
-          const response = await fetch('/api/v1/orders/status-stream', {
+          const response = await fetch(`${this.config.apiBaseUrl}/orders/status-stream`, {
             headers: { Authorization: `Bearer ${token}`, Accept: 'text/event-stream' },
             signal: controller.signal,
           });
